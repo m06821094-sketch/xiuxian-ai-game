@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "description": "修仙AI对话游戏 - 配置示例",
+  "models": {
+    "openai": {
+      "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "apiKey": "your-api-key-here",
+      "model": "qwen-turbo"
+    },
+    "ollama": {
+      "baseUrl": "http://localhost:11434",
+      "model": "qwen2.5"
+    }
+  },
+  "game": {
+    "defaultModel": "openai",
+    "dreamProbability": 0.2,
+    "randomEventInterval": [3, 5],
+    "timeoutMs": 2000
+  }
+}
