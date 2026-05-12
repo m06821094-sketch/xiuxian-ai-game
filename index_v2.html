@@ -394,7 +394,7 @@ body {
 
     <!-- Status -->
     <div class="status-panel">
-      <h2>· 状 态 ·</h2>
+      <h2>· 状 态 · <span style="font-size:.65rem;color:#4a6a4a;font-weight:300;cursor:help" title="师恩：师尊对你的看重程度。恭顺、受教、体贴可提升。\n凡心：你对世俗的牵挂。越高越难修行，但也让你更像一个活人。\n努力提升师恩，同时控制凡心，不同组合通向不同结局。">(?)</span></h2>
       <div class="status-item">
         <span class="label">师恩</span>
         <div class="progress-row">
@@ -587,8 +587,9 @@ function saveCfg() {
     }
   };
   localStorage.setItem("xiuxian_v2_cfg", JSON.stringify(cfg));
-  $("modelStatus").textContent = "✅ 配置已保存 · " + (mode === "ollama" ? "Ollama" : "OpenAI");
-  $("modelStatus").className = "model-status";
+  const hasKey = cfg.openai && cfg.openai.apiKey ? "API Key 已填" : "⚠️ API Key 为空";
+  $("modelStatus").textContent = "✅ " + cfg.mode + " 已保存 · " + hasKey;
+  $("modelStatus").className = cfg.openai.apiKey ? "model-status" : "model-status error";
 }
 
 function cfgTabClick(e) {
@@ -923,12 +924,16 @@ async function handleSend() {
     console.warn("AI调用失败:", e);
     $("modelStatus").textContent = "⚠️ API请求失败：" + (e.message || "未知错误");
     $("modelStatus").className = "model-status error";
-    // Fallback 回复（含选项）
+    // Fallback 回复（含选项）—— 即使无API也能继续游戏
     const fallbacks = [
-      { text: "（青砚真人没有抬头。她的笔尖悬在纸上，像是在等你说什么，又像是什么都不等。）", choices: ["认错", "辩解", "沉默"] },
-      { text: "「你最近的修为……没有寸进。」她的语气平得像一面湖。", choices: ["请求指点", "承认分心", "低头不语"] },
-      { text: "（她站在廊下看雪，背影笔直，却不知为什么让人觉得单薄。）", choices: ["站到她身边", "在远处陪着", "转身离去"] },
-      { text: "「霁月宗的规矩，你不是不知道。」她说这话时，没有看你。", choices: ["说知道", "问为什么规矩不能改", "认罚"] }
+      { text: "（青砚真人没有抬头。她的笔尖悬在纸上，像是在等你说什么，又像是什么都不等。）\n\n过了很久，她才开口：「你知道我叫你进来是为了什么。」这不是问句。", choices: ["弟子知错", "弟子不明白", "请师尊明示"] },
+      { text: "「你最近的修为……没有寸进。」她的语气平得像一面湖，但你听得出湖底有东西。\n她终于看了你一眼，又移开。", choices: ["请求师尊指点", "承认近来分心", "低头不语"] },
+      { text: "（她站在廊下看雪。背影笔直，却不知为什么让人觉得单薄。雪落在她肩上，她不掸。）\n\n「苍梧山的雪，一年比一年大了。」她像是在对你说，又像自言自语。", choices: ["站到她身边去", "在廊下远远陪着", "问她在想什么"] },
+      { text: "「霁月宗的规矩，你不是不知道。」她说这话时依然没有看你。\n「既然知道，为什么还要犯？」她的声音里有一丝你从未听过的东西——不像愤怒，更像失望。", choices: ["说弟子知错了", "说规矩不一定都对", "沉默认罚"] },
+      { text: "（你站在戒律院里，炉火烧得很静。她翻着一本旧卷宗，翻得很慢，像是在找什么，又像是在拖延什么。）\n\n「你上前来。」她说。", choices: ["走上前去", "迟疑了一下再上前", "问她要看什么"] },
+      { text: "「你入霁月宗几年了？」她忽然问。\n不等你回答，她又说：「三年。三年了，你一点都没学会沉住气。」\n这话说得不重，却比打还疼。", choices: ["说弟子让您失望了", "说弟子有苦衷", "沉默地跪下来"] },
+      { text: "（暮色从窗口漫进来。她把笔搁下，揉了揉眉心——你第一次看见她做这个动作。像是很累。）\n\n「罢了。你退下吧。明日卯时，来丹房找我。」", choices: ["谢师尊，告退", "问她明日要做什么", "站着不走"] },
+      { text: "「你剑法练到第几式了？」她忽然转了话题。\n你答了。她听完，沉默了一会儿。\n「明日演武场，我亲自试你的剑。」", choices: ["谢师尊指点", "弟子不敢", "有些讶异地看着她"] }
     ];
     const fb = fallbacks[Math.floor(Math.random() * fallbacks.length)];
     addMessage("ai", fb.text);
@@ -1005,7 +1010,13 @@ function init() {
     $("cfgOpenaiModel").value = cfg.openai.model;
   }
 
-  $("modelStatus").textContent = cfg ? "✅ 已配置 · 讯飞星辰 (astron-code-latest)" : "⏳ 请配置模型后开始游戏";
+  if (cfg.openai.apiKey) {
+    $("modelStatus").textContent = "✅ 讯飞星辰 已配置";
+    $("modelStatus").className = "model-status";
+  } else {
+    $("modelStatus").textContent = "⚠️ 未配置 API Key，AI 将以规则模式运行（点击右下角⚙️配置）";
+    $("modelStatus").className = "model-status error";
+  }
 }
 
 document.addEventListener("DOMContentLoaded", init);
