@@ -3,272 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>云游志 · 修仙叙事</title>
+<title>霁月宗 · 青砚叙事</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:15px}
-body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;background:#0e1412;color:#c8d8b8;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
-.game-container{width:100%;max-width:960px;background:linear-gradient(145deg,#162018 0%,#1a2a1e 100%);border:1px solid #2a4a2e;border-radius:16px;box-shadow:0 8px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(80,180,80,.08);overflow:hidden}
-.game-header{padding:20px 24px 14px;text-align:center;border-bottom:1px solid #2a3a2a;background:linear-gradient(180deg,#1c2a1e 0%,transparent)}
-.game-header h1{font-size:1.6rem;font-weight:500;color:#b8d8a8;letter-spacing:4px;text-shadow:0 0 20px rgba(100,200,100,.15)}
-.game-header .subtitle{font-size:.85rem;color:#6a8a6a;margin-top:2px;letter-spacing:6px}
+body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;background:#0a0f0e;color:#c0d0b8;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.game-container{width:100%;max-width:960px;background:linear-gradient(145deg,#101a12 0%,#141f16 100%);border:1px solid #1f3322;border-radius:12px;box-shadow:0 8px 48px rgba(0,0,0,.7);overflow:hidden}
+.game-header{padding:18px 24px 12px;text-align:center;border-bottom:1px solid #1f2f1f}
+.game-header h1{font-size:1.5rem;font-weight:400;color:#a8c8a0;letter-spacing:6px;text-shadow:0 0 20px rgba(80,180,80,.08)}
+.game-header .sub{font-size:.8rem;color:#5a7a5a;margin-top:1px;letter-spacing:3px}
 .game-main{display:flex;height:540px}
-.chat-panel{flex:1;display:flex;flex-direction:column;min-width:0;border-right:1px solid #223022}
-.chat-messages{flex:1;overflow-y:auto;padding:16px 16px 8px;scroll-behavior:smooth}
+.chat-panel{flex:1;display:flex;flex-direction:column;min-width:0;border-right:1px solid #1a2a1a}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;scroll-behavior:smooth}
 .chat-messages::-webkit-scrollbar{width:4px}
 .chat-messages::-webkit-scrollbar-track{background:transparent}
-.chat-messages::-webkit-scrollbar-thumb{background:#2a4a2e;border-radius:4px}
+.chat-messages::-webkit-scrollbar-thumb{background:#1f3a22;border-radius:4px}
 .message{margin-bottom:12px}
-.message-bubble{display:inline-block;max-width:85%;padding:10px 14px;border-radius:10px;font-size:.9rem;line-height:1.6;word-break:break-word;animation:fadeIn .3s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.player{text-align:right}
-.player-bubble{background:#1e3a1e;border:1px solid #2a5a2a;color:#d0e0c0;border-bottom-right-radius:4px}
-.ai{text-align:left}
-.ai-bubble{background:#1a2a1e;border:1px solid #2a3a2a;color:#b8d0a8;border-bottom-left-radius:4px}
-.system{text-align:center}
-.system-bubble{background:#0e1a10;border:1px solid #1a3a1a;color:#8aaa8a;font-size:.8rem;max-width:90%;border-radius:8px}
-.event-btn{display:block;width:100%;margin:4px 0;padding:7px 12px;background:#1a2a1a;border:1px solid #2a5a2a;border-radius:6px;color:#b8d0a8;font-size:.82rem;cursor:pointer;font-family:inherit;transition:all .2s;text-align:left}
-.event-btn:hover{background:#2a4a2a;border-color:#3a7a3a;color:#d8e8c8}
-.chat-input-area{display:flex;gap:8px;padding:10px 12px 12px;border-top:1px solid #223022;background:#121a14}
-.chat-input-area input{flex:1;padding:8px 12px;background:#0e1a10;border:1px solid #2a3a2a;border-radius:8px;color:#d0e0c0;font-size:.9rem;outline:none;transition:border-color .2s;font-family:inherit}
-.chat-input-area input:focus{border-color:#3a7a3a}
-.chat-input-area input::placeholder{color:#4a5a4a}
-.send-btn{padding:8px 18px;background:#2a5a2a;border:none;border-radius:8px;color:#d0e8c0;font-size:.9rem;cursor:pointer;transition:background .2s;font-family:inherit}
-.send-btn:hover{background:#3a7a3a}
-.send-btn:disabled{opacity:.4;cursor:not-allowed}
-.status-panel{width:230px;flex-shrink:0;padding:16px;display:flex;flex-direction:column;gap:14px;background:linear-gradient(180deg,#141e14 0%,#0e1a10)}
-.status-panel h2{font-size:.9rem;font-weight:400;color:#6a8a6a;letter-spacing:4px;text-align:center;border-bottom:1px solid #1a2a1a;padding-bottom:6px}
-.status-item{display:flex;flex-direction:column;gap:3px}
-.status-item .label{font-size:.78rem;color:#6a8a6a}
-.progress-row{display:flex;align-items:center;gap:8px}
-.progress-bar{flex:1;height:6px;background:#0a140c;border-radius:3px;overflow:hidden}
-.progress-fill{height:100%;border-radius:3px;transition:width .5s ease,background .5s ease}
-.progress-fill.cult{background:linear-gradient(90deg,#3a5a7a,#5a8aaa)}
-.progress-fill.fort{background:linear-gradient(90deg,#5a7a3a,#7aaa5a)}
-.progress-value{font-size:.8rem;color:#8aaa8a;min-width:28px;text-align:right}
-.static-row{display:flex;justify-content:space-between;align-items:center}
-.static-row .label{font-size:.78rem;color:#6a8a6a}
-.static-row .value{font-size:.82rem;color:#b8d0a8}
-.reset-btn,.config-btn{padding:8px;background:transparent;border:1px solid #2a3a2a;border-radius:6px;color:#7a9a7a;font-size:.8rem;cursor:pointer;transition:all .2s;font-family:inherit;margin-top:auto}
-.reset-btn:hover{border-color:#5a7a5a;color:#b8d0a8}
-.config-panel{padding:16px 20px 20px;border-top:1px solid #223022;background:#0e1410;display:none}
-.config-panel.open{display:block}
-.config-panel h3{font-size:.9rem;color:#8aaa8a;margin-bottom:10px;font-weight:400}
-.config-tabs{display:flex;gap:4px;margin-bottom:10px}
-.config-tabs button{flex:1;padding:6px;background:#121a14;border:1px solid #2a3a2a;border-radius:6px;color:#6a8a6a;font-size:.8rem;cursor:pointer;transition:all .2s;font-family:inherit}
-.config-tabs button.active{background:#1a2a1e;border-color:#3a7a3a;color:#b8d0a8}
-.config-form{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
-.config-form label{font-size:.75rem;color:#5a7a5a}
-.config-form input{padding:6px 10px;background:#0e1a10;border:1px solid #2a3a2a;border-radius:6px;color:#c8d8b8;font-size:.82rem;outline:none;font-family:inherit}
-.config-form input:focus{border-color:#3a7a3a}
-.config-form.hidden{display:none}
-.config-actions{display:flex;gap:8px;margin-top:8px}
-.save-btn{flex:1;padding:7px;background:#2a5a2a;border:none;border-radius:6px;color:#d0e8c0;font-size:.82rem;cursor:pointer;font-family:inherit}
-.save-btn:hover{background:#3a7a3a}
-.model-status{font-size:.75rem;color:#5a8a5a;margin-top:6px;text-align:center}
-.model-status.error{color:#8a5a5a}
-.ending-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;justify-content:center;align-items:center;backdrop-filter:blur(4px)}
-.ending-overlay.open{display:flex}
-.ending-card{background:linear-gradient(145deg,#162018,#1a2a1e);border:1px solid #3a5a3a;border-radius:16px;padding:40px 48px;max-width:420px;width:90%;text-align:center;animation:fadeIn .4s ease;box-shadow:0 0 60px rgba(80,160,80,.08)}
-.ending-card h2{font-size:1.6rem;font-weight:300;color:#c8e0b8;letter-spacing:8px;margin-bottom:16px}
-.ending-card .desc{color:#8aaa8a;line-height:1.8;margin-bottom:24px;font-size:.9rem}
-.ending-card button{padding:8px 28px;background:#2a5a2a;border:none;border-radius:8px;color:#d0e8c0;font-size:.9rem;cursor:pointer;font-family:inherit}
-.ending-card button:hover{background:#3a7a3a}
-@media(max-width:640px){body{padding:10px}.game-main{flex-direction:column;height:auto}.chat-panel{border-right:none;min-height:400px}.status-panel{width:100%;flex-direction:row;flex-wrap:wrap;gap:8px;padding:12px;border-top:1px solid #223022}.status-panel h2{display:none}.status-item{flex:1;min-width:80px}}
+.msg-b{display:inline-block;max-width:86%;padding:10px 14px;border-radius:8px;font-size:.88rem;line-height:1.65;word-break:break-word;animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.pl{text-align:right}.pl .msg-b{background:#172a18;border:1px solid #1f3f1f;color:#c8ddc0;border-bottom-right-radius:2px}
+.npc{text-align:left}.npc .msg-b{background:#121f14;border:1px solid #1a2f1a;color:#b0c8a8;border-bottom-left-radius:2px}
+.sys{text-align:center}.sys .msg-b{background:#0a140c;border:1px solid #142414;color:#7a9a7a;font-size:.78rem;max-width:92%;border-radius:6px}
+.choice-grp{display:flex;gap:5px;margin-top:3px;margin-bottom:8px}
+.choice-grp button{flex:1;padding:8px 6px;background:#142414;border:1px solid #2a4a2a;border-radius:6px;color:#b0d0a0;font-size:.8rem;cursor:pointer;font-family:inherit;text-align:center;transition:all .2s}
+.choice-grp button:hover{background:#1f3a1f;border-color:#3a6a3a}
+.chat-in{display:flex;gap:6px;padding:10px 12px 12px;border-top:1px solid #1a2a1a;background:#0e1810}
+.chat-in input{flex:1;padding:8px 12px;background:#0a140c;border:1px solid #1f2f1f;border-radius:6px;color:#c8ddc0;font-size:.88rem;outline:none;font-family:inherit}
+.chat-in input:focus{border-color:#2a5a2a}
+.chat-in input::placeholder{color:#3f5a3f}
+.send-btn{padding:8px 16px;background:#1f3f1f;border:none;border-radius:6px;color:#c8ddc0;font-size:.88rem;cursor:pointer;font-family:inherit;transition:background .2s}
+.send-btn:hover{background:#2a5a2a}.send-btn:disabled{opacity:.35;cursor:default}
+.status{width:210px;flex-shrink:0;padding:16px;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,#0f1a10 0%,#0a140c)}
+.status h2{font-size:.85rem;font-weight:400;color:#5a7a5a;text-align:center;border-bottom:1px solid #142414;padding-bottom:6px;letter-spacing:3px}
+.stat{display:flex;flex-direction:column;gap:2px}
+.stat .l{font-size:.75rem;color:#5a7a5a}
+.pr{display:flex;align-items:center;gap:6px}
+.pb{flex:1;height:5px;background:#08120a;border-radius:3px;overflow:hidden}
+.pf{height:100%;border-radius:3px;transition:width .5s}
+.pf.fav{background:linear-gradient(90deg,#3a5a3a,#5a8a4a)}
+.pf.karma{background:linear-gradient(90deg,#5a3a3a,#8a4a4a)}
+.pv{font-size:.78rem;color:#7a9a7a;min-width:24px;text-align:right}
+.sr{display:flex;justify-content:space-between;align-items:center}
+.sr .l{font-size:.75rem;color:#5a7a5a}.sr .v{font-size:.8rem;color:#b0c8a8}
+.cfg-btn,.rst-btn{padding:7px;background:transparent;border:1px solid #1f2f1f;border-radius:5px;color:#6a8a6a;font-size:.78rem;cursor:pointer;font-family:inherit;margin-top:auto}
+.cfg-btn:hover,.rst-btn:hover{border-color:#3f5f3f;color:#a0c0a0}
+.cfg-panel{padding:14px 18px 18px;border-top:1px solid #1a2a1a;background:#0a120c;display:none}
+.cfg-panel.on{display:block}
+.cfg-panel h3{font-size:.85rem;color:#7a9a7a;margin-bottom:8px;font-weight:400}
+.ct{display:flex;gap:3px;margin-bottom:8px}
+.ct button{flex:1;padding:5px;background:#0e180e;border:1px solid #1f2f1f;border-radius:5px;color:#5a7a5a;font-size:.78rem;cursor:pointer;font-family:inherit}
+.ct button.on{background:#142414;border-color:#2a5a2a;color:#a0c0a0}
+.cf{display:flex;flex-direction:column;gap:3px;margin-bottom:6px}
+.cf label{font-size:.72rem;color:#4a6a4a}
+.cf input{padding:5px 8px;background:#0a140c;border:1px solid #1f2f1f;border-radius:5px;color:#c0d0b8;font-size:.8rem;outline:none;font-family:inherit}
+.cf input:focus{border-color:#2a5a2a}
+.cf.h{display:none}
+.ca{display:flex;gap:6px;margin-top:6px}
+.sv-btn{flex:1;padding:6px;background:#1f3f1f;border:none;border-radius:5px;color:#c8ddc0;font-size:.8rem;cursor:pointer;font-family:inherit}
+.sv-btn:hover{background:#2a5a2a}
+.ms{font-size:.72rem;color:#5a8a5a;margin-top:5px;text-align:center}
+.ms.err{color:#8a5a5a}
+@media(max-width:640px){body{padding:8px}.game-main{flex-direction:column;height:auto}.chat-panel{border-right:none;min-height:380px}.status{width:100%;flex-direction:row;flex-wrap:wrap;gap:6px;padding:10px;border-top:1px solid #1a2a1a}.status h2{display:none}.stat{flex:1;min-width:70px}}
 </style>
 </head>
 <body>
 
 <div class="game-container">
   <div class="game-header">
-    <h1>云游志</h1>
-    <div class="subtitle">— 修仙叙事 · 每次皆不相同 —</div>
+    <h1>霁 月 宗</h1>
+    <div class="sub">— 青 砚 叙 事 —</div>
   </div>
 
   <div class="game-main">
     <div class="chat-panel">
-      <div class="chat-messages" id="chatMessages"></div>
-      <div class="chat-input-area">
-        <input type="text" id="userInput" placeholder="输入你的行动..." autocomplete="off">
-        <button class="send-btn" id="sendBtn">↵</button>
+      <div class="chat-messages" id="msgs"></div>
+      <div class="chat-in">
+        <input type="text" id="inp" placeholder="输入你的行动..." autocomplete="off">
+        <button class="send-btn" id="snd">↵</button>
       </div>
     </div>
 
-    <div class="status-panel">
-      <h2>· 修 行 ·</h2>
-      <div class="status-item">
-        <span class="label">修为</span>
-        <div class="progress-row">
-          <div class="progress-bar"><div class="progress-fill cult" id="cultFill"></div></div>
-          <span class="progress-value" id="cultVal">10</span>
-        </div>
+    <div class="status">
+      <h2>· 状 ·</h2>
+      <div class="stat">
+        <span class="l">师恩</span>
+        <div class="pr"><div class="pb"><div class="pf fav" id="favFill"></div></div><span class="pv" id="favVal">30</span></div>
       </div>
-      <div class="status-item">
-        <span class="label">机缘</span>
-        <div class="progress-row">
-          <div class="progress-bar"><div class="progress-fill fort" id="fortFill"></div></div>
-          <span class="progress-value" id="fortVal">10</span>
-        </div>
+      <div class="stat">
+        <span class="l">业障</span>
+        <div class="pr"><div class="pb"><div class="pf karma" id="karmaFill"></div></div><span class="pv" id="karmaVal">0</span></div>
       </div>
-      <div class="static-row"><span class="label">天数</span><span class="value" id="dayVal">1</span></div>
-      <div class="static-row"><span class="label">步数</span><span class="value" id="roundVal">0</span></div>
-      <button class="config-btn" id="configToggle">⚙️ 模型配置</button>
-      <button class="reset-btn" id="resetBtn">⟳ 重新入世</button>
+      <div class="sr"><span class="l">天数</span><span class="v" id="dayV">1</span></div>
+      <div class="sr"><span class="l">轮次</span><span class="v" id="rndV">0</span></div>
+      <button class="cfg-btn" id="cfgT">⚙️ 配置</button>
+      <button class="rst-btn" id="rst">⟳ 重新开始</button>
     </div>
   </div>
 
-  <div class="config-panel" id="configPanel">
+  <div class="cfg-panel" id="cfgP">
     <h3>模型配置</h3>
-    <div class="config-tabs">
-      <button class="active" data-mode="openai">OpenAI 兼容</button>
-      <button data-mode="ollama">Ollama 本地</button>
+    <div class="ct">
+      <button class="on" data-m="openai">OpenAI 兼容</button>
+      <button data-m="ollama">Ollama</button>
     </div>
-    <div class="config-form" id="openaiForm">
+    <div class="cf" id="oaF">
       <label>Base URL</label>
-      <input type="text" id="cfgOpenaiUrl" value="https://maas-coding-api.cn-huabei-1.xf-yun.com/v2" placeholder="https://api.openai.com/v1">
+      <input type="text" id="oaUrl" value="https://maas-coding-api.cn-huabei-1.xf-yun.com/v2">
       <label>API Key</label>
-      <input type="password" id="cfgOpenaiKey" placeholder="sk-...">
+      <input type="password" id="oaKey">
       <label>Model</label>
-      <input type="text" id="cfgOpenaiModel" value="astron-code-latest" placeholder="gpt-4">
+      <input type="text" id="oaMod" value="astron-code-latest">
     </div>
-    <div class="config-form hidden" id="ollamaForm">
+    <div class="cf h" id="olF">
       <label>Base URL</label>
-      <input type="text" id="cfgOllamaUrl" value="http://localhost:11434" placeholder="http://localhost:11434">
+      <input type="text" id="olUrl" value="http://localhost:11434">
       <label>Model</label>
-      <input type="text" id="cfgOllamaModel" value="qwen2.5" placeholder="qwen2.5">
+      <input type="text" id="olMod" value="qwen2.5">
     </div>
-    <div class="config-actions">
-      <button class="save-btn" id="saveConfig">保存配置</button>
-    </div>
-    <div class="model-status" id="modelStatus">状态：待配置</div>
-  </div>
-</div>
-
-<div class="ending-overlay" id="endingOverlay">
-  <div class="ending-card">
-    <h2 id="endingTitle"></h2>
-    <div class="desc" id="endingDesc"></div>
-    <button id="endingRestart">重新入世</button>
+    <div class="ca"><button class="sv-btn" id="svCfg">保存</button></div>
+    <div class="ms" id="mStatus">状态：待配置</div>
   </div>
 </div>
 
 <script>
-// ============================================================
-//  状 态 管 理
-// ============================================================
-const DEFAULT = { cultivation:10, fortune:10, day:1, round:0, history:[], ended:false };
+// ===== 状态管理 =====
+const DFLT = { favor:30, karma:0, day:1, round:0, history:[], ended:false };
 let G = loadState();
-function $(id){ return document.getElementById(id); }
+const $ = id => document.getElementById(id);
 
 function loadState(){
-  try{
-    const r = localStorage.getItem("yunyou_state");
-    if(r) return {...DEFAULT, ...JSON.parse(r)};
-  }catch(e){}
-  return {...DEFAULT};
+  try{ const r = localStorage.getItem("jy_state"); if(r) return {...DFLT, ...JSON.parse(r)}; }catch(e){}
+  return {...DFLT};
 }
-function saveState(){
-  try{ localStorage.setItem("yunyou_state", JSON.stringify(G)); }catch(e){}
-}
+function saveState(){ try{ localStorage.setItem("jy_state", JSON.stringify(G)); }catch(e){} }
 
 function resetState(){
-  G = {...DEFAULT};
+  G = {...DFLT};
   saveState();
-  const box = $("chatMessages");
-  box.innerHTML = "";
-  // 随机开局场景
-  const openings = [
-    "你在一座不知名的山脚下醒来。暮色四合，远处有钟声传来。山间有路，不知通向何处。",
-    "你站在一座热闹的修仙坊市中，周围是叫卖的散修和琳琅的法器摊位。没有人注意到你。",
-    "一场大战之后，你从废墟中爬出来。身边横七竖八躺着尸体，你记不清自己是谁。",
-    "你在深山古刹中打坐醒来。窗外大雪纷飞，一个老僧背对着你，正在慢吞吞地扫地。",
-    "你是某个小宗门的外门弟子，今天是宗门大比的日子。演武场上人声鼎沸，而你——还不会一招像样的术法。"
-  ];
-  const op = openings[Math.floor(Math.random() * openings.length)];
-  writeSystem(op);
+  const box = $("msgs"); box.innerHTML = "";
+  writeSys("霁月宗，苍梧山。冬月十七，晨。\n\n你跪在戒律院外的石阶上，已经跪了大半个时辰了。膝盖冻得发麻，但你不敢动。\n\n门终于开了。\n\n青砚真人站在门槛内，目光扫过你肩上的雪，停了一瞬。\n\n「进来。」\n\n她先转身进去了。你没有起身——你是被罚跪的，没有她的准许，不能起。\n\n过了几息，里头传来一声：「还要我请你？」声音平平的，听不出情绪。");
   renderChoices([
-    {label:"A", text:"环顾四周"},
-    {label:"B", text:"迈步向前"},
-    {label:"C", text:"闭上眼睛感受灵气"}
+    {l:"A", t:"低头跟进去"},
+    {l:"B", t:"跪着不动，等她再说一句"},
+    {l:"C", t:"站起身，在门口顿了顿再进"}
   ], box);
-  $("endingOverlay").classList.remove("open");
-  $("userInput").disabled = false;
-  $("sendBtn").disabled = false;
+  $("inp").disabled = false; $("snd").disabled = false;
   renderUI();
 }
 
-// ============================================================
-//  UI 渲染
-// ============================================================
+// ===== UI =====
 function renderUI(){
-  const c = Math.min(100, Math.max(0, G.cultivation));
-  const f = Math.min(100, Math.max(0, G.fortune));
-  $("cultFill").style.width = c + "%";
-  $("fortFill").style.width = f + "%";
-  $("cultVal").textContent = G.cultivation;
-  $("fortVal").textContent = G.fortune;
-  $("dayVal").textContent = Math.ceil(G.day);
-  $("roundVal").textContent = G.round;
-
-  // 修为颜色
-  const cultEl = $("cultFill");
-  if(c >= 70) cultEl.style.background = "linear-gradient(90deg,#4a7a9a,#6a9aba)";
-  else if(c >= 40) cultEl.style.background = "linear-gradient(90deg,#3a5a7a,#5a8aaa)";
-  else cultEl.style.background = "linear-gradient(90deg,#2a4a5a,#4a6a7a)";
-
-  const fortEl = $("fortFill");
-  if(f >= 70) fortEl.style.background = "linear-gradient(90deg,#5a9a5a,#7aba7a)";
-  else if(f >= 40) fortEl.style.background = "linear-gradient(90deg,#5a7a3a,#7aaa5a)";
-  else fortEl.style.background = "linear-gradient(90deg,#4a6a3a,#6a8a5a)";
+  const f = Math.min(100, Math.max(0, G.favor));
+  const k = Math.min(100, Math.max(0, G.karma));
+  $("favFill").style.width = f + "%";
+  $("karmaFill").style.width = k + "%";
+  $("favVal").textContent = G.favor;
+  $("karmaVal").textContent = G.karma;
+  $("dayV").textContent = Math.ceil(G.day);
+  $("rndV").textContent = G.round;
 }
 
-function addMessage(role, content){
-  const box = $("chatMessages");
+function addMsg(role, content){
+  const box = $("msgs");
   const d = document.createElement("div");
   d.className = "message " + role;
-  const cls = role==="player"?"player-bubble":role==="system"?"system-bubble":"ai-bubble";
-  d.innerHTML = '<div class="message-bubble '+cls+'">'+content.replace(/\n/g,'<br>')+'</div>';
+  const cls = role==="pl"?"pl":role==="sys"?"sys":"npc";
+  d.innerHTML = '<div class="msg-b ' + (role==="pl"?"pl":role==="sys"?"sys":"npc") + '">' + content.replace(/\n/g,'<br>') + '</div>';
   box.appendChild(d);
   box.scrollTop = box.scrollHeight;
   G.history.push({role,content});
-  if(G.history.length > 200) G.history.splice(0,20);
+  if(G.history.length > 300) G.history.splice(0,30);
 }
 
-function writeSystem(t){ addMessage("system", t); }
+function writeSys(t){ addMsg("sys", t); }
 
-// ============================================================
-//  选 项 系 统
-// ============================================================
+// ===== 选项 =====
 function parseChoices(text){
-  const pattern = /【选项([ABC])】([^【]*)/g;
-  const choices = [];
-  let m;
-  while((m = pattern.exec(text)) !== null) choices.push({label:m[1], text:m[2].trim()});
-  return choices.length === 3 ? choices : [];
+  const p = /【选项([ABC])】([^【]*)/g; const c = []; let m;
+  while((m=p.exec(text)) !== null) c.push({l:m[1], t:m[2].trim()});
+  return c.length === 3 ? c : [];
 }
-function stripChoices(text){
-  return text.replace(/\n?【选项[ABC]】[^【]*/g,'').trim();
-}
+function stripChoices(text){ return text.replace(/\n?【选项[ABC]】[^【]*/g,'').trim(); }
+
 function renderChoices(choices, container){
   if(!choices||!choices.length) return;
-  // 清除旧的选择按钮
-  document.querySelectorAll(".choice-group").forEach(el => el.remove());
+  document.querySelectorAll(".choice-grp").forEach(el => el.remove());
   const div = document.createElement("div");
-  div.className = "message choice-group";
-  div.style="margin-top:4px;display:flex;gap:6px";
-  
-  let labels = ["A","B","C"];
-  choices.forEach((ch,i) => {
+  div.className = "choice-grp";
+  choices.forEach(ch => {
     const btn = document.createElement("button");
-    btn.className = "event-btn";
-    btn.style="flex:1;text-align:center;padding:9px 8px;background:#1e301e;border:1px solid #3a6a3a;border-radius:8px;color:#b8d8a8;font-size:.82rem;cursor:pointer;font-family:inherit";
-    btn.textContent = ch.label + ". " + ch.text;
-    btn.onmouseover = ()=>{btn.style.background="#2a4a2a";btn.style.borderColor="#4a8a4a"};
-    btn.onmouseout = ()=>{btn.style.background="#1e301e";btn.style.borderColor="#3a6a3a"};
-    btn.onclick = ()=>{
+    btn.textContent = ch.l + ". " + ch.t;
+    btn.onclick = () => {
       div.remove();
-      const input = $("userInput");
-      input.value = ch.text;
+      $("inp").value = ch.t;
       handleSend();
     };
     div.appendChild(btn);
@@ -276,66 +203,45 @@ function renderChoices(choices, container){
   container.appendChild(div);
 }
 
-// ============================================================
-//  配 置
-// ============================================================
+// ===== 配置 =====
 let cfg = null;
 function loadCfg(){
   try{
-    const r = localStorage.getItem("yunyou_cfg");
+    const r = localStorage.getItem("jy_cfg");
     if(r){
       cfg = JSON.parse(r);
-      if(cfg.openai){
-        $("cfgOpenaiUrl").value = cfg.openai.baseUrl || "";
-        $("cfgOpenaiKey").value = cfg.openai.apiKey || "";
-        $("cfgOpenaiModel").value = cfg.openai.model || "";
-      }
-      if(cfg.ollama){
-        $("cfgOllamaUrl").value = cfg.ollama.baseUrl || "http://localhost:11434";
-        $("cfgOllamaModel").value = cfg.ollama.model || "qwen2.5";
-      }
-      if(cfg.mode === "ollama"){
-        document.querySelectorAll(".config-tabs button").forEach(b => {
-          b.classList.toggle("active", b.dataset.mode === "ollama");
-        });
-        $("openaiForm").classList.add("hidden");
-        $("ollamaForm").classList.remove("hidden");
+      if(cfg.openai){ $("oaUrl").value = cfg.openai.baseUrl||""; $("oaKey").value = cfg.openai.apiKey||""; $("oaMod").value = cfg.openai.model||""; }
+      if(cfg.ollama){ $("olUrl").value = cfg.ollama.baseUrl||"http://localhost:11434"; $("olMod").value = cfg.ollama.model||"qwen2.5"; }
+      if(cfg.mode==="ollama"){
+        document.querySelectorAll(".ct button").forEach(b => b.classList.toggle("on", b.dataset.m==="ollama"));
+        $("oaF").classList.add("h"); $("olF").classList.remove("h");
       }
     }
   }catch(e){}
 }
 function saveCfg(){
-  const mode = document.querySelector(".config-tabs button.active").dataset.mode;
-  cfg = {
-    mode,
-    openai: { baseUrl: $("cfgOpenaiUrl").value.trim(), apiKey: $("cfgOpenaiKey").value.trim(), model: $("cfgOpenaiModel").value.trim() },
-    ollama: { baseUrl: $("cfgOllamaUrl").value.trim()||"http://localhost:11434", model: $("cfgOllamaModel").value.trim()||"qwen2.5" }
+  const mode = document.querySelector(".ct button.on").dataset.m;
+  cfg = { mode,
+    openai:{baseUrl:$("oaUrl").value.trim(), apiKey:$("oaKey").value.trim(), model:$("oaMod").value.trim()},
+    ollama:{baseUrl:$("olUrl").value.trim()||"http://localhost:11434", model:$("olMod").value.trim()||"qwen2.5"}
   };
-  localStorage.setItem("yunyou_cfg", JSON.stringify(cfg));
-  const hasKey = cfg.openai && cfg.openai.apiKey;
-  $("modelStatus").textContent = hasKey ? "✅ 已配置" : "⚠️ API Key 为空";
-  $("modelStatus").className = hasKey ? "model-status" : "model-status error";
+  localStorage.setItem("jy_cfg", JSON.stringify(cfg));
+  const hk = cfg.openai && cfg.openai.apiKey;
+  $("mStatus").textContent = hk ? "✅ 已配置" : "⚠️ API Key 为空";
+  $("mStatus").className = hk ? "ms" : "ms err";
 }
 
-// ============================================================
-//  AI 调 用
-// ============================================================
-async function callAI(messages){
+// ===== AI =====
+async function callAI(msgs){
   if(!cfg) throw new Error("请先配置模型");
   const ctl = new AbortController();
-  const timer = setTimeout(() => ctl.abort(), 10000);
+  const tmr = setTimeout(() => ctl.abort(), 12000);
   try{
     if(cfg.mode === "ollama"){
-      const url = cfg.ollama.baseUrl.replace(/\/+$/,"")+"/api/chat";
+      const url = cfg.ollama.baseUrl.replace(/\/+$/,"") + "/api/chat";
       const r = await fetch(url, {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          model: cfg.ollama.model,
-          messages: messages.map(m=>({role:m.role,content:m.content})),
-          stream:false,
-          options:{temperature:0.85}
-        }),
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({model:cfg.ollama.model, messages:msgs.map(m=>({role:m.role,content:m.content})), stream:false, options:{temperature:0.8}}),
         signal: ctl.signal
       });
       if(!r.ok) throw new Error("Ollama: "+r.status);
@@ -343,99 +249,120 @@ async function callAI(messages){
     } else {
       const base = cfg.openai.baseUrl.replace(/\/+$/,"");
       const r = await fetch(base+"/chat/completions", {
-        method:"POST",
-        headers:{"Content-Type":"application/json","Authorization":"Bearer "+cfg.openai.apiKey},
-        body:JSON.stringify({
-          model: cfg.openai.model||"gpt-4",
-          messages: messages,
-          temperature: 0.85,
-          max_tokens: 600
-        }),
+        method:"POST", headers:{"Content-Type":"application/json","Authorization":"Bearer "+cfg.openai.apiKey},
+        body:JSON.stringify({model:cfg.openai.model||"gpt-4", messages:msgs, temperature:0.8, max_tokens:700}),
         signal: ctl.signal
       });
-      if(!r.ok) throw new Error("API: "+r.status+" "+r.statusText);
+      if(!r.ok) throw new Error("API: "+r.status);
       return (await r.json()).choices[0].message.content;
     }
-  }finally{ clearTimeout(timer); }
+  }finally{ clearTimeout(tmr); }
 }
 
 function buildPrompt(){
+  const fDesc = G.favor < 30 ? "她对季临川很失望，话极少，目光不落在他身上。" :
+    G.favor < 60 ? "她对这个弟子还算留神，但语气始终是公事公办。" :
+    G.favor < 80 ? "她开始会在无人时多看季临川一眼，但话里仍不露声色。" :
+    "她对季临川的偏护已经到了自己都未必察觉的程度。执法时依然严格，但执行方式上总有一些微妙的偏移。";
+
+  const kDesc = G.karma < 20 ? "季临川近期还算安分。" :
+    G.karma < 50 ? "季临川身上背着几笔旧账，戒律院盯着他。" :
+    G.karma < 80 ? "季临川的违规记录越来越厚。再犯一次，谁都护不住他。" :
+    "季临川已经站在被逐出师门的边缘了。";
+
   return [
-    { role: "system", content: `你是「云游志」的游戏主持（Game Master），一个修仙/仙侠世界的叙事引擎。
+    {role:"system", content:
+`你是修仙世界「霁月宗」的叙事生成器。
+
+=== 核心设定 ===
+萧青砚（青砚真人），霁月宗戒律院长老。
+季临川，她的弟子——天赋极高，性格叛逆。
 
 === 现状 ===
-修为：${G.cultivation}/100（修行境界和实力）
-机缘：${G.fortune}/100（气运和际遇）
+师恩（青砚对季临川的信任）：${G.favor}/100
+业障（季临川的违规累积）：${G.karma}/100
 第 ${Math.ceil(G.day)} 天
-累计行动：${G.round} 次
 
-=== 规则 ===
-1. 每次生成一段沉浸式叙事回复（中文，80-150字）。
-2. 文学化风格，有画面感和细节，不要网文套路。
-3. 每次回复结尾必须提供3个选项，格式：
-   【选项A】具体行动描述
-   【选项B】具体行动描述
-   【选项C】具体行动描述
-4. 玩家可以不选选项，自由输入任何行动。你要灵活响应。
-5. 世界是动态的——NPC、地点、事件、敌人、机缘都由你创造。
-6. 保持叙事连贯性：记住之前发生过什么。
-7. 修为和机缘会影响叙事走向：修者强时遇到更强的挑战，机缘好时遇到奇遇。
-8. 当故事走向自然结局（飞升、陨落、归隐、入魔等）时，用【结局】标记。
-   格式：
-   叙事内容……
-   【结局】结局名称
-   结局描述……
+${fDesc}
+${kDesc}
 
-=== 叙事风格 ===
-- 偏现实主义+古典文学，像《聊斋》《阅微草堂笔记》的感觉
-- 对话有潜台词，行为有动机
-- 世界有质感：风雨、冷暖、饥饿、疲惫
-- 每次开局应当生成完全不同的世界和起点，不要重复设定
-- NPC要有自己的性格和目的，不是工具人
+=== 核心冲突（永远不能消失） ===
+「让一个绝对守规矩的人，在不能破坏规则的前提下，慢慢失控。」
 
-开始叙事。第一句先描述玩家所处的环境、时间和处境，然后给出3个选项。` }
+青砚的行为底层逻辑：
+1. 永远优先执行宗门戒律
+2. 不允许明显徇私
+3. 允许「合法范围内的微小偏移」
+4. 情绪只能通过行为偏差体现，绝不直接表达
+5. 若情绪压力过高 → 表现为更严格的执法
+
+=== 剧情生成规则 ===
+每一轮必须生成一个事件，类型轮流切换：
+• 违规事件：季临川触犯门规（私斗、夜出、顶撞等）
+• 执法事件：青砚处理季临川（审判、罚跪、禁闭、鞭罚等）
+• 沉默事件：没有冲突，但关系在安静中推进（眼神、遗漏、未尽之言）
+
+=== 对话风格 ===
+青砚：冷静、简短、克制。不说「我担心/我在意/我喜欢」。用「戒律/宗门/规矩」表达一切。
+季临川：情绪更直接，可反抗规则，但不理解规则体系的全部逻辑。
+
+=== 输出格式 ===
+每次回复包含叙事内容 + 3个选项：
+【选项A】行动描述
+【选项B】行动描述
+【选项C】行动描述
+
+选项要贴合当前情境和人物性格。青砚的视角选项要体现「规矩内的偏移」这种张力。
+
+=== 禁止 ===
+• 禁止现代恋爱表达
+• 禁止直接写「她爱他」或心理分析式叙述
+• 禁止角色脱离宗门伦理逻辑
+• 不要结局。要持续张力循环。
+
+开始叙事。先描述当前场景。`}
   ];
 }
 
-// ============================================================
-//  游 戏 核 心
-// ============================================================
+// ===== 游戏逻辑 =====
 function processEngagement(text){
-  // AI自我管理修为和机缘，这里只做微调
-  let c = 0, f = 0;
-  // 悟道/修行/探索相关
-  if(/悟|修|练|参|静坐|打坐|钻研|参悟|修炼|运气/.test(text)) c += Math.floor(Math.random()*3)+1;
-  // 行善/助人相关
-  else if(/帮|救|助|施|善|让/.test(text)) f += Math.floor(Math.random()*3)+1;
-  // 冒险/探索相关
-  else if(/走|去|探|寻|找|闯|追/.test(text)) f += Math.floor(Math.random()*2);
-  // 战斗/对抗相关
-  else if(/战|斗|攻|杀|打|剑/.test(text)) c += Math.floor(Math.random()*4)+1;
-  // 消极/退缩
-  else if(/逃|躲|退|怕|不/.test(text)) { c -= Math.floor(Math.random()*2)+1; f -= Math.floor(Math.random()*2); }
+  let fav = 0, krm = 0;
+  // 恭顺/受教 → 师恩+
+  if(/弟子知错|弟子明白|遵命|是|谢师尊|谢真人|弟子不敢|受教|知道了|认罚/.test(text)) { fav += 2 + Math.floor(Math.random()*3); krm -= Math.floor(Math.random()*2); }
+  // 认错/低头 → 业障-
+  else if(/我错了|是我的错|对不起|我不该|弟子有罪/.test(text)) { fav += Math.floor(Math.random()*2); krm -= 2 + Math.floor(Math.random()*3); }
+  // 关心师尊 → 师恩+
+  else if(/您没事吧|您辛苦了|您还好|您的伤|担心您|您脸色/.test(text)) { fav += 3 + Math.floor(Math.random()*3); }
+  // 顶撞/抗命 → 师恩- 业障+
+  else if(/凭什么|为什么|我不服|不要你管|你管不着|凭什么罚我/.test(text)) { fav -= 3 + Math.floor(Math.random()*3); krm += 2 + Math.floor(Math.random()*3); }
+  // 违纪行为 → 业障+
+  else if(/偷偷|溜出去|翻墙|夜出|禁地|偷|闯/.test(text)) { krm += 3 + Math.floor(Math.random()*3); }
+  // 沉默/回避 → 微小波动
+  else if(/……|\.\.\.|算了|没什么|沉默|不语/.test(text)) { fav--; }
+  // 努力修炼 → 师恩+
+  else if(/修炼|练剑|打坐|悟|参|修行|练功|剑法/.test(text)) { fav += 1 + Math.floor(Math.random()*2); }
   // 默认
-  else { c += Math.floor(Math.random()*3)-1; f += Math.floor(Math.random()*3)-1; }
-  G.cultivation = Math.min(100, Math.max(0, G.cultivation + c));
-  G.fortune = Math.min(100, Math.max(0, G.fortune + f));
-  if(c!==0||f!==0){
+  else { fav += Math.floor(Math.random()*3)-1; krm += Math.floor(Math.random()*2)-1; }
+
+  G.favor = Math.min(100, Math.max(0, G.favor + fav));
+  G.karma = Math.min(100, Math.max(0, G.karma + krm));
+  if(fav !== 0 || krm !== 0){
     const parts = [];
-    if(c>0) parts.push("修为 +"+c); if(c<0) parts.push("修为 "+c);
-    if(f>0) parts.push("机缘 +"+f); if(f<0) parts.push("机缘 "+f);
-    writeSystem("（" + parts.join("，") + "）");
+    if(fav > 0) parts.push("师恩 +"+fav); if(fav < 0) parts.push("师恩 "+fav);
+    if(krm > 0) parts.push("业障 +"+krm); if(krm < 0) parts.push("业障 "+krm);
+    writeSys("（" + parts.join("，") + "）");
   }
 }
 
-// ============================================================
-//  发送消息
-// ============================================================
+// ===== 发送 =====
 async function handleSend(){
-  const input = $("userInput");
-  const text = input.value.trim();
+  const inp = $("inp");
+  const text = inp.value.trim();
   if(!text || G.ended) return;
-  input.value = "";
-  $("sendBtn").disabled = true;
+  inp.value = "";
+  $("snd").disabled = true;
 
-  addMessage("player", text);
+  addMsg("pl", text);
   G.round++;
   G.day = G.round / 3 + 1;
 
@@ -443,119 +370,72 @@ async function handleSend(){
   renderUI();
   saveState();
 
-  if(G.ended){ $("sendBtn").disabled = false; return; }
+  if(G.ended){ $("snd").disabled = false; return; }
 
-  try {
+  try{
     const msgs = buildPrompt();
     const recent = G.history.slice(-20);
-    for(const m of recent) msgs.push({role:m.role, content:m.content});
+    for(const m of recent) msgs.push({role:m.role==="pl"?"user":m.role==="npc"?"assistant":"system", content:m.content});
     const reply = await callAI(msgs);
-
-    // 检查结局标记
-    if(reply.includes("【结局】")){
-      const endMatch = reply.match(/【结局】([^\n]+)\n([\s\S]*)/);
-      if(endMatch){
-        G.ended = true;
-        saveState();
-        const clean = stripChoices(endMatch[0] || reply);
-        addMessage("ai", clean.replace(/【结局】[^\n]*/,''));
-        $("endingTitle").textContent = "🏁 " + endMatch[1].trim();
-        $("endingDesc").textContent = endMatch[2].trim();
-        $("endingOverlay").classList.add("open");
-        $("userInput").disabled = true;
-        $("sendBtn").disabled = true;
-        renderUI();
-        $("sendBtn").disabled = false;
-        return;
-      }
-    }
-
     const choices = parseChoices(reply);
     const clean = stripChoices(reply);
-    addMessage("ai", clean);
-    if(choices.length){
-      renderChoices(choices, $("chatMessages"));
-      $("chatMessages").scrollTop = $("chatMessages").scrollHeight;
-    }
+    addMsg("npc", clean);
+    if(choices.length) { renderChoices(choices, $("msgs")); $("msgs").scrollTop = $("msgs").scrollHeight; }
   } catch(e){
-    console.warn("AI failure:", e);
-    $("modelStatus").textContent = "⚠️ " + (e.message||"请求失败");
-    $("modelStatus").className = "model-status error";
-
+    console.warn(e);
+    $("mStatus").textContent = "⚠️ "+(e.message||"请求失败");
+    $("mStatus").className = "ms err";
     const fallbacks = [
-      { text: "你沿着山路走了不久，前方出现一座石桥。桥下流水湍急，对岸隐约有人影。", choices: ["过桥", "沿溪而下", "在桥头歇息"] },
-      { text: "你在林中遇到一位采药老人。他看了你一眼，说：「年轻人，前面可不是什么好去处。」", choices: ["问为什么", "执意前行", "向老人问路"] },
-      { text: "天色暗了。远处升起炊烟，像是有村落。近处有一座废弃的亭子，石桌上有半局残棋。", choices: ["去村落投宿", "在亭中过夜", "研究那局残棋"] },
-      { text: "一阵异香飘来。你循香而去，发现一株通体透明的草药，灵气浓郁。但旁边卧着一头似虎非虎的妖兽。", choices: ["冒险采药", "悄悄退走", "尝试与妖兽沟通"] },
-      { text: "你走到一处悬崖边。崖下有云海翻涌，崖壁上刻着几行古字，像是什么心法口诀。", choices: ["记下口诀", "纵身跃入云海", "沿崖壁寻找路径"] },
+      { t: "青砚真人坐在案后，笔悬在纸上。过了很久，她才开口：「你知道我叫你来是为了什么。」这不是问句。", c: ["弟子知错","弟子不明白","沉默"] },
+      { t: "「你最近……修为毫无寸进。」她把卷宗合上，看了你一眼——很淡的一眼。「你自己知道原因。」", c: ["请师尊指点","弟子分心了","低头不语"] },
+      { t: "暮色从窗口漫进来。她把笔搁下，揉了揉眉心——你第一次见她做这个动作。像是很累。", c: ["问她是不是不舒服","站着不走","告退"] },
+      { t: "「有人看见你昨夜去了后山禁地。」她声音很平，平得反常。「你有什么要说的。」", c: ["承认","辩解","沉默以对"] },
+      { t: "戒律院里很静。炉火烧着，偶尔发出一声轻微的爆裂。她翻着一卷旧卷宗，你没有说话，她也没有。", c: ["开口打破沉默","安静等着","问她在看什么"] },
+      { t: "「你的剑法是谁教的？」她忽然问。你答了。她沉默了一会儿，说：「明日演武场，我亲自试你。」", c: ["谢师尊","弟子不敢","有些意外地看着她"] },
     ];
     const fb = fallbacks[G.round % fallbacks.length];
-    addMessage("ai", fb.text);
-    renderChoices(fb.choices.map((t,i)=>({label:"ABC"[i],text:t})), $("chatMessages"));
+    addMsg("npc", fb.t);
+    renderChoices(fb.c.map((t,i)=>({l:"ABC"[i],t})), $("msgs"));
   }
 
-  renderUI();
-  saveState();
-  $("sendBtn").disabled = false;
-  input.focus();
+  renderUI(); saveState();
+  $("snd").disabled = false;
+  inp.focus();
 }
 
-// ============================================================
-//  初 始 化
-// ============================================================
+// ===== 初始化 =====
 function init(){
   loadCfg();
-
-  $("configToggle").onclick = ()=>$("configPanel").classList.toggle("open");
-  document.querySelectorAll(".config-tabs button").forEach(b=>{b.onclick=function(){
-    document.querySelectorAll(".config-tabs button").forEach(x=>x.classList.remove("active"));
-    this.classList.add("active");
-    $("openaiForm").classList.toggle("hidden", this.dataset.mode!=="openai");
-    $("ollamaForm").classList.toggle("hidden", this.dataset.mode!=="ollama");
+  $("cfgT").onclick = ()=>$("cfgP").classList.toggle("on");
+  document.querySelectorAll(".ct button").forEach(b=>{b.onclick=function(){
+    document.querySelectorAll(".ct button").forEach(x=>x.classList.remove("on"));
+    this.classList.add("on");
+    $("oaF").classList.toggle("h", this.dataset.m!=="openai");
+    $("olF").classList.toggle("h", this.dataset.m!=="ollama");
   }});
-  $("saveConfig").onclick = saveCfg;
-  $("sendBtn").onclick = handleSend;
-  $("userInput").onkeydown = e => { if(e.key==="Enter") handleSend(); };
-  $("resetBtn").onclick = ()=>{ if(confirm("重新入世？当前进度将消失。")) resetState(); };
-  $("endingRestart").onclick = resetState;
+  $("svCfg").onclick = saveCfg;
+  $("snd").onclick = handleSend;
+  $("inp").onkeydown = e => { if(e.key==="Enter") handleSend(); };
+  $("rst").onclick = ()=>{ if(confirm("重新开始？当前进度将消失。")) resetState(); };
 
-  // 读取已有进度或开局
   if(G.history.length > 0){
-    const box = $("chatMessages");
-    box.innerHTML = "";
-    for(const m of G.history) addMessage(m.role, m.content);
-    if(G.ended){ $("userInput").disabled = true; $("sendBtn").disabled = true; }
-  } else {
-    resetState();
-  }
+    const box = $("msgs"); box.innerHTML = "";
+    for(const m of G.history) addMsg(m.role, m.content);
+    if(G.ended){ $("inp").disabled = true; $("snd").disabled = true; }
+  } else { resetState(); }
 
-  // 配置状态
   if(!cfg){
-    cfg = {
-      mode:"openai",
-      openai:{baseUrl:"https://maas-coding-api.cn-huabei-1.xf-yun.com/v2", apiKey:"", model:"astron-code-latest"},
-      ollama:{baseUrl:"http://localhost:11434", model:"qwen2.5"}
-    };
-    localStorage.setItem("yunyou_cfg", JSON.stringify(cfg));
-    $("cfgOpenaiUrl").value = cfg.openai.baseUrl;
-    $("cfgOpenaiModel").value = cfg.openai.model;
+    cfg = { mode:"openai", openai:{baseUrl:"https://maas-coding-api.cn-huabei-1.xf-yun.com/v2", apiKey:"", model:"astron-code-latest"}, ollama:{baseUrl:"http://localhost:11434", model:"qwen2.5"} };
+    localStorage.setItem("jy_cfg", JSON.stringify(cfg));
+    $("oaUrl").value = cfg.openai.baseUrl; $("oaMod").value = cfg.openai.model;
   }
-  if(cfg.openai.apiKey){
-    $("modelStatus").textContent = "✅ 已配置";
-    $("modelStatus").className = "model-status";
-  } else {
-    $("modelStatus").textContent = "⚠️ 未配置 API Key，将以规则模式运行";
-    $("modelStatus").className = "model-status error";
-  }
+  $("mStatus").textContent = cfg.openai.apiKey ? "✅ 已配置" : "⚠️ 未配置 API Key，将以规则模式运行";
+  $("mStatus").className = cfg.openai.apiKey ? "ms" : "ms err";
 }
 
-// URL reset handler
 if(location.search.includes("reset=1")){
-  localStorage.removeItem("yunyou_state");
-  localStorage.removeItem("yunyou_cfg");
-  location.replace(location.pathname);
+  localStorage.removeItem("jy_state"); localStorage.removeItem("jy_cfg"); location.replace(location.pathname);
 }
-
 document.addEventListener("DOMContentLoaded", init);
 </script>
 </body>
