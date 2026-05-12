@@ -1019,6 +1019,14 @@ function init() {
   }
 }
 
+// 如果URL带 ?reset=1，清除所有游戏数据
+if (location.search.includes("reset=1")) {
+  localStorage.removeItem("xiuxian_v2_state");
+  localStorage.removeItem("xiuxian_v2_cfg");
+  // 清除后重定向到不带参数的URL
+  location.replace(location.pathname);
+}
+
 document.addEventListener("DOMContentLoaded", init);
 </script>
 </body>
