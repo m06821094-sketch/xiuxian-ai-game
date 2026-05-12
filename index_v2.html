@@ -3,421 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>苍梧夜雪 · 霁月宗叙事</title>
+<title>云游志 · 修仙叙事</title>
 <style>
-/* ===== Reset & Base ===== */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 15px; }
-body {
-  font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
-  background: #0e1412;
-  color: #c8d8b8;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
-/* ===== Layout ===== */
-.game-container {
-  width: 100%;
-  max-width: 960px;
-  background: linear-gradient(145deg, #162018 0%, #1a2a1e 100%);
-  border: 1px solid #2a4a2e;
-  border-radius: 16px;
-  box-shadow: 0 8px 48px rgba(0,0,0,.6), inset 0 1px 0 rgba(80,180,80,.08);
-  overflow: hidden;
-}
-.game-header {
-  padding: 20px 24px 14px;
-  text-align: center;
-  border-bottom: 1px solid #2a3a2a;
-  background: linear-gradient(180deg, #1c2a1e 0%, transparent);
-}
-.game-header h1 {
-  font-size: 1.6rem;
-  font-weight: 500;
-  color: #b8d8a8;
-  letter-spacing: 4px;
-  text-shadow: 0 0 20px rgba(100,200,100,.15);
-}
-.game-header .subtitle {
-  font-size: .85rem;
-  color: #6a8a6a;
-  margin-top: 2px;
-  letter-spacing: 6px;
-}
-.game-main {
-  display: flex;
-  height: 540px;
-}
-
-/* ===== Chat Panel ===== */
-.chat-panel {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  border-right: 1px solid #223022;
-}
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px 16px 8px;
-  scroll-behavior: smooth;
-}
-.chat-messages::-webkit-scrollbar { width: 4px; }
-.chat-messages::-webkit-scrollbar-track { background: transparent; }
-.chat-messages::-webkit-scrollbar-thumb { background: #2a4a2e; border-radius: 4px; }
-
-.message { margin-bottom: 12px; }
-.message-bubble {
-  display: inline-block;
-  max-width: 85%;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-size: .9rem;
-  line-height: 1.6;
-  word-break: break-word;
-  animation: fadeIn .3s ease;
-}
-@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-.player { text-align: right; }
-.player-bubble {
-  background: #1e3a1e;
-  border: 1px solid #2a5a2a;
-  color: #d0e0c0;
-  border-bottom-right-radius: 4px;
-}
-.ai { text-align: left; }
-.ai-bubble {
-  background: #1a2a1e;
-  border: 1px solid #2a3a2a;
-  color: #b8d0a8;
-  border-bottom-left-radius: 4px;
-}
-.system { text-align: center; }
-.system-bubble {
-  background: #0e1a10;
-  border: 1px solid #1a3a1a;
-  color: #8aaa8a;
-  font-size: .8rem;
-  max-width: 90%;
-  border-radius: 8px;
-}
-
-/* event buttons */
-.event-btn {
-  display: block;
-  width: 100%;
-  margin: 4px 0;
-  padding: 7px 12px;
-  background: #1a2a1a;
-  border: 1px solid #2a5a2a;
-  border-radius: 6px;
-  color: #b8d0a8;
-  font-size: .82rem;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all .2s;
-  text-align: left;
-}
-.event-btn:hover {
-  background: #2a4a2a;
-  border-color: #3a7a3a;
-  color: #d8e8c8;
-}
-
-/* ===== Chat Input ===== */
-.chat-input-area {
-  display: flex;
-  gap: 8px;
-  padding: 10px 12px 12px;
-  border-top: 1px solid #223022;
-  background: #121a14;
-}
-.chat-input-area input {
-  flex: 1;
-  padding: 8px 12px;
-  background: #0e1a10;
-  border: 1px solid #2a3a2a;
-  border-radius: 8px;
-  color: #d0e0c0;
-  font-size: .9rem;
-  outline: none;
-  transition: border-color .2s;
-  font-family: inherit;
-}
-.chat-input-area input:focus { border-color: #3a7a3a; }
-.chat-input-area input::placeholder { color: #4a5a4a; }
-.send-btn {
-  padding: 8px 18px;
-  background: #2a5a2a;
-  border: none;
-  border-radius: 8px;
-  color: #d0e8c0;
-  font-size: .9rem;
-  cursor: pointer;
-  transition: background .2s;
-  font-family: inherit;
-}
-.send-btn:hover { background: #3a7a3a; }
-.send-btn:disabled { opacity: .4; cursor: not-allowed; }
-
-/* ===== Status Panel ===== */
-.status-panel {
-  width: 230px;
-  flex-shrink: 0;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  background: linear-gradient(180deg, #141e14 0%, #0e1a10);
-}
-.status-panel h2 {
-  font-size: .9rem;
-  font-weight: 400;
-  color: #6a8a6a;
-  letter-spacing: 4px;
-  text-align: center;
-  border-bottom: 1px solid #1a2a1a;
-  padding-bottom: 6px;
-}
-.status-item {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.status-item .label {
-  font-size: .78rem;
-  color: #6a8a6a;
-}
-.status-item .value {
-  font-size: .85rem;
-  color: #b8d0a8;
-  text-align: right;
-}
-.progress-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.progress-bar {
-  flex: 1;
-  height: 6px;
-  background: #0a140c;
-  border-radius: 3px;
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width .5s ease, background .5s ease;
-}
-.progress-fill.trust { background: linear-gradient(90deg, #5a7a3a, #7aaa5a); }
-.progress-fill.memory { background: linear-gradient(90deg, #3a5a7a, #5a8aaa); }
-.progress-value { font-size: .8rem; color: #8aaa8a; min-width: 28px; text-align: right; }
-
-.static-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.static-row .label { font-size: .78rem; color: #6a8a6a; }
-.static-row .value { font-size: .82rem; color: #b8d0a8; }
-
-.reset-btn, .config-btn {
-  padding: 8px;
-  background: transparent;
-  border: 1px solid #2a3a2a;
-  border-radius: 6px;
-  color: #7a9a7a;
-  font-size: .8rem;
-  cursor: pointer;
-  transition: all .2s;
-  font-family: inherit;
-  margin-top: auto;
-}
-.reset-btn:hover { border-color: #5a7a5a; color: #b8d0a8; }
-
-/* ===== Config Panel ===== */
-.config-panel {
-  padding: 16px 20px 20px;
-  border-top: 1px solid #223022;
-  background: #0e1410;
-  display: none;
-}
-.config-panel.open { display: block; }
-.config-panel h3 {
-  font-size: .9rem;
-  color: #8aaa8a;
-  margin-bottom: 10px;
-  font-weight: 400;
-}
-.config-tabs { display: flex; gap: 4px; margin-bottom: 10px; }
-.config-tabs button {
-  flex: 1;
-  padding: 6px;
-  background: #121a14;
-  border: 1px solid #2a3a2a;
-  border-radius: 6px;
-  color: #6a8a6a;
-  font-size: .8rem;
-  cursor: pointer;
-  transition: all .2s;
-  font-family: inherit;
-}
-.config-tabs button.active { background: #1a2a1e; border-color: #3a7a3a; color: #b8d0a8; }
-.config-form { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
-.config-form label { font-size: .75rem; color: #5a7a5a; }
-.config-form input {
-  padding: 6px 10px;
-  background: #0e1a10;
-  border: 1px solid #2a3a2a;
-  border-radius: 6px;
-  color: #c8d8b8;
-  font-size: .82rem;
-  outline: none;
-  font-family: inherit;
-}
-.config-form input:focus { border-color: #3a7a3a; }
-.config-form.hidden { display: none; }
-
-.config-actions { display: flex; gap: 8px; margin-top: 8px; }
-.save-btn {
-  flex: 1;
-  padding: 7px;
-  background: #2a5a2a;
-  border: none;
-  border-radius: 6px;
-  color: #d0e8c0;
-  font-size: .82rem;
-  cursor: pointer;
-  font-family: inherit;
-}
-.save-btn:hover { background: #3a7a3a; }
-.model-status {
-  font-size: .75rem;
-  color: #5a8a5a;
-  margin-top: 6px;
-  text-align: center;
-}
-.model-status.error { color: #8a5a5a; }
-
-/* ===== Ending overlay ===== */
-.ending-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.7);
-  z-index: 100;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(4px);
-}
-.ending-overlay.open { display: flex; }
-.ending-card {
-  background: linear-gradient(145deg, #162018, #1a2a1e);
-  border: 1px solid #3a5a3a;
-  border-radius: 16px;
-  padding: 40px 48px;
-  max-width: 420px;
-  width: 90%;
-  text-align: center;
-  animation: fadeIn .4s ease;
-  box-shadow: 0 0 60px rgba(80,160,80,.08);
-}
-.ending-card h2 {
-  font-size: 1.6rem;
-  font-weight: 300;
-  color: #c8e0b8;
-  letter-spacing: 8px;
-  margin-bottom: 16px;
-}
-.ending-card .desc {
-  color: #8aaa8a;
-  line-height: 1.8;
-  margin-bottom: 24px;
-  font-size: .9rem;
-}
-.ending-card button {
-  padding: 8px 28px;
-  background: #2a5a2a;
-  border: none;
-  border-radius: 8px;
-  color: #d0e8c0;
-  font-size: .9rem;
-  cursor: pointer;
-  font-family: inherit;
-}
-.ending-card button:hover { background: #3a7a3a; }
-
-/* ===== Responsive ===== */
-@media (max-width: 640px) {
-  body { padding: 10px; }
-  .game-main { flex-direction: column; height: auto; }
-  .chat-panel { border-right: none; min-height: 400px; }
-  .status-panel {
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 12px;
-    border-top: 1px solid #223022;
-  }
-  .status-panel h2 { display: none; }
-  .status-item { flex: 1; min-width: 80px; }
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;background:#0e1412;color:#c8d8b8;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+.game-container{width:100%;max-width:960px;background:linear-gradient(145deg,#162018 0%,#1a2a1e 100%);border:1px solid #2a4a2e;border-radius:16px;box-shadow:0 8px 48px rgba(0,0,0,.6),inset 0 1px 0 rgba(80,180,80,.08);overflow:hidden}
+.game-header{padding:20px 24px 14px;text-align:center;border-bottom:1px solid #2a3a2a;background:linear-gradient(180deg,#1c2a1e 0%,transparent)}
+.game-header h1{font-size:1.6rem;font-weight:500;color:#b8d8a8;letter-spacing:4px;text-shadow:0 0 20px rgba(100,200,100,.15)}
+.game-header .subtitle{font-size:.85rem;color:#6a8a6a;margin-top:2px;letter-spacing:6px}
+.game-main{display:flex;height:540px}
+.chat-panel{flex:1;display:flex;flex-direction:column;min-width:0;border-right:1px solid #223022}
+.chat-messages{flex:1;overflow-y:auto;padding:16px 16px 8px;scroll-behavior:smooth}
+.chat-messages::-webkit-scrollbar{width:4px}
+.chat-messages::-webkit-scrollbar-track{background:transparent}
+.chat-messages::-webkit-scrollbar-thumb{background:#2a4a2e;border-radius:4px}
+.message{margin-bottom:12px}
+.message-bubble{display:inline-block;max-width:85%;padding:10px 14px;border-radius:10px;font-size:.9rem;line-height:1.6;word-break:break-word;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.player{text-align:right}
+.player-bubble{background:#1e3a1e;border:1px solid #2a5a2a;color:#d0e0c0;border-bottom-right-radius:4px}
+.ai{text-align:left}
+.ai-bubble{background:#1a2a1e;border:1px solid #2a3a2a;color:#b8d0a8;border-bottom-left-radius:4px}
+.system{text-align:center}
+.system-bubble{background:#0e1a10;border:1px solid #1a3a1a;color:#8aaa8a;font-size:.8rem;max-width:90%;border-radius:8px}
+.event-btn{display:block;width:100%;margin:4px 0;padding:7px 12px;background:#1a2a1a;border:1px solid #2a5a2a;border-radius:6px;color:#b8d0a8;font-size:.82rem;cursor:pointer;font-family:inherit;transition:all .2s;text-align:left}
+.event-btn:hover{background:#2a4a2a;border-color:#3a7a3a;color:#d8e8c8}
+.chat-input-area{display:flex;gap:8px;padding:10px 12px 12px;border-top:1px solid #223022;background:#121a14}
+.chat-input-area input{flex:1;padding:8px 12px;background:#0e1a10;border:1px solid #2a3a2a;border-radius:8px;color:#d0e0c0;font-size:.9rem;outline:none;transition:border-color .2s;font-family:inherit}
+.chat-input-area input:focus{border-color:#3a7a3a}
+.chat-input-area input::placeholder{color:#4a5a4a}
+.send-btn{padding:8px 18px;background:#2a5a2a;border:none;border-radius:8px;color:#d0e8c0;font-size:.9rem;cursor:pointer;transition:background .2s;font-family:inherit}
+.send-btn:hover{background:#3a7a3a}
+.send-btn:disabled{opacity:.4;cursor:not-allowed}
+.status-panel{width:230px;flex-shrink:0;padding:16px;display:flex;flex-direction:column;gap:14px;background:linear-gradient(180deg,#141e14 0%,#0e1a10)}
+.status-panel h2{font-size:.9rem;font-weight:400;color:#6a8a6a;letter-spacing:4px;text-align:center;border-bottom:1px solid #1a2a1a;padding-bottom:6px}
+.status-item{display:flex;flex-direction:column;gap:3px}
+.status-item .label{font-size:.78rem;color:#6a8a6a}
+.progress-row{display:flex;align-items:center;gap:8px}
+.progress-bar{flex:1;height:6px;background:#0a140c;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width .5s ease,background .5s ease}
+.progress-fill.cult{background:linear-gradient(90deg,#3a5a7a,#5a8aaa)}
+.progress-fill.fort{background:linear-gradient(90deg,#5a7a3a,#7aaa5a)}
+.progress-value{font-size:.8rem;color:#8aaa8a;min-width:28px;text-align:right}
+.static-row{display:flex;justify-content:space-between;align-items:center}
+.static-row .label{font-size:.78rem;color:#6a8a6a}
+.static-row .value{font-size:.82rem;color:#b8d0a8}
+.reset-btn,.config-btn{padding:8px;background:transparent;border:1px solid #2a3a2a;border-radius:6px;color:#7a9a7a;font-size:.8rem;cursor:pointer;transition:all .2s;font-family:inherit;margin-top:auto}
+.reset-btn:hover{border-color:#5a7a5a;color:#b8d0a8}
+.config-panel{padding:16px 20px 20px;border-top:1px solid #223022;background:#0e1410;display:none}
+.config-panel.open{display:block}
+.config-panel h3{font-size:.9rem;color:#8aaa8a;margin-bottom:10px;font-weight:400}
+.config-tabs{display:flex;gap:4px;margin-bottom:10px}
+.config-tabs button{flex:1;padding:6px;background:#121a14;border:1px solid #2a3a2a;border-radius:6px;color:#6a8a6a;font-size:.8rem;cursor:pointer;transition:all .2s;font-family:inherit}
+.config-tabs button.active{background:#1a2a1e;border-color:#3a7a3a;color:#b8d0a8}
+.config-form{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.config-form label{font-size:.75rem;color:#5a7a5a}
+.config-form input{padding:6px 10px;background:#0e1a10;border:1px solid #2a3a2a;border-radius:6px;color:#c8d8b8;font-size:.82rem;outline:none;font-family:inherit}
+.config-form input:focus{border-color:#3a7a3a}
+.config-form.hidden{display:none}
+.config-actions{display:flex;gap:8px;margin-top:8px}
+.save-btn{flex:1;padding:7px;background:#2a5a2a;border:none;border-radius:6px;color:#d0e8c0;font-size:.82rem;cursor:pointer;font-family:inherit}
+.save-btn:hover{background:#3a7a3a}
+.model-status{font-size:.75rem;color:#5a8a5a;margin-top:6px;text-align:center}
+.model-status.error{color:#8a5a5a}
+.ending-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;justify-content:center;align-items:center;backdrop-filter:blur(4px)}
+.ending-overlay.open{display:flex}
+.ending-card{background:linear-gradient(145deg,#162018,#1a2a1e);border:1px solid #3a5a3a;border-radius:16px;padding:40px 48px;max-width:420px;width:90%;text-align:center;animation:fadeIn .4s ease;box-shadow:0 0 60px rgba(80,160,80,.08)}
+.ending-card h2{font-size:1.6rem;font-weight:300;color:#c8e0b8;letter-spacing:8px;margin-bottom:16px}
+.ending-card .desc{color:#8aaa8a;line-height:1.8;margin-bottom:24px;font-size:.9rem}
+.ending-card button{padding:8px 28px;background:#2a5a2a;border:none;border-radius:8px;color:#d0e8c0;font-size:.9rem;cursor:pointer;font-family:inherit}
+.ending-card button:hover{background:#3a7a3a}
+@media(max-width:640px){body{padding:10px}.game-main{flex-direction:column;height:auto}.chat-panel{border-right:none;min-height:400px}.status-panel{width:100%;flex-direction:row;flex-wrap:wrap;gap:8px;padding:12px;border-top:1px solid #223022}.status-panel h2{display:none}.status-item{flex:1;min-width:80px}}
 </style>
 </head>
 <body>
 
 <div class="game-container">
-  <!-- Header -->
   <div class="game-header">
-    <h1>苍梧夜雪</h1>
-    <div class="subtitle">— 霁月宗叙事 · 文字互动 —</div>
+    <h1>云游志</h1>
+    <div class="subtitle">— 修仙叙事 · 每次皆不相同 —</div>
   </div>
 
-  <!-- Main -->
   <div class="game-main">
-    <!-- Chat -->
     <div class="chat-panel">
       <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-input-area">
-        <input type="text" id="userInput" placeholder="对青砚真人说些什么..." autocomplete="off">
-        <button class="send-btn" id="sendBtn">发送</button>
+        <input type="text" id="userInput" placeholder="输入你的行动..." autocomplete="off">
+        <button class="send-btn" id="sendBtn">↵</button>
       </div>
     </div>
 
-    <!-- Status -->
     <div class="status-panel">
-      <h2>· 状 态 · <span style="font-size:.65rem;color:#4a6a4a;font-weight:300;cursor:help" title="师恩：师尊对你的看重程度。恭顺、受教、体贴可提升。\n凡心：你对世俗的牵挂。越高越难修行，但也让你更像一个活人。\n努力提升师恩，同时控制凡心，不同组合通向不同结局。">(?)</span></h2>
+      <h2>· 修 行 ·</h2>
       <div class="status-item">
-        <span class="label">师恩</span>
+        <span class="label">修为</span>
         <div class="progress-row">
-          <div class="progress-bar"><div class="progress-fill trust" id="trustFill"></div></div>
-          <span class="progress-value" id="trustVal">30</span>
+          <div class="progress-bar"><div class="progress-fill cult" id="cultFill"></div></div>
+          <span class="progress-value" id="cultVal">10</span>
         </div>
       </div>
       <div class="status-item">
-        <span class="label">凡心</span>
+        <span class="label">机缘</span>
         <div class="progress-row">
-          <div class="progress-bar"><div class="progress-fill memory" id="memoryFill"></div></div>
-          <span class="progress-value" id="memoryVal">0</span>
+          <div class="progress-bar"><div class="progress-fill fort" id="fortFill"></div></div>
+          <span class="progress-value" id="fortVal">10</span>
         </div>
       </div>
       <div class="static-row"><span class="label">天数</span><span class="value" id="dayVal">1</span></div>
-      <div class="static-row"><span class="label">地点</span><span class="value" id="locVal">霁月宗 · 苍梧山</span></div>
-      <div class="static-row"><span class="label">交互</span><span class="value" id="roundVal">0</span></div>
+      <div class="static-row"><span class="label">步数</span><span class="value" id="roundVal">0</span></div>
       <button class="config-btn" id="configToggle">⚙️ 模型配置</button>
-      <button class="reset-btn" id="resetBtn">⟳ 重置游戏</button>
+      <button class="reset-btn" id="resetBtn">⟳ 重新入世</button>
     </div>
   </div>
 
-  <!-- Config Panel -->
   <div class="config-panel" id="configPanel">
     <h3>模型配置</h3>
     <div class="config-tabs">
@@ -445,123 +144,157 @@ body {
   </div>
 </div>
 
-<!-- Ending Overlay -->
 <div class="ending-overlay" id="endingOverlay">
   <div class="ending-card">
     <h2 id="endingTitle"></h2>
     <div class="desc" id="endingDesc"></div>
-    <button id="endingRestart">重新开始</button>
+    <button id="endingRestart">重新入世</button>
   </div>
 </div>
 
 <script>
 // ============================================================
-//  状态管理
+//  状 态 管 理
 // ============================================================
-const DEFAULT_STATE = {
-  trust: 30,
-  memory: 0,
-  day: 1,
-  location: "霁月宗 · 苍梧山",
-  round: 0,
-  history: [],
-  nextEventRound: 0,
-  dreamTriggered: false,
-  ended: false,
-  lastEndingCheck: { trust: -1, memory: -1 }
-};
-
+const DEFAULT = { cultivation:10, fortune:10, day:1, round:0, history:[], ended:false };
 let G = loadState();
+function $(id){ return document.getElementById(id); }
 
-function loadState() {
-  try {
-    const raw = localStorage.getItem("xiuxian_v2_state");
-    if (raw) return { ...DEFAULT_STATE, ...JSON.parse(raw) };
-  } catch (e) { /* ignore */ }
-  return { ...DEFAULT_STATE };
+function loadState(){
+  try{
+    const r = localStorage.getItem("yunyou_state");
+    if(r) return {...DEFAULT, ...JSON.parse(r)};
+  }catch(e){}
+  return {...DEFAULT};
+}
+function saveState(){
+  try{ localStorage.setItem("yunyou_state", JSON.stringify(G)); }catch(e){}
 }
 
-function saveState() {
-  try { localStorage.setItem("xiuxian_v2_state", JSON.stringify(G)); } catch (e) {}
-}
-
-function resetState() {
-  G = { ...DEFAULT_STATE };
+function resetState(){
+  G = {...DEFAULT};
   saveState();
-  renderUI();
   const box = $("chatMessages");
   box.innerHTML = "";
-  writeSystem("苍梧山，霁月宗。冬月初七，大雪。\n\n你跪在戒律院外的石阶上，已经半个时辰了。膝盖隔着薄薄的单裤抵着青石，冷意像针一样往骨头里扎。\n\n门开了。\n\n青砚真人站在门槛内，没有看你，目光落在檐外的雪上。\n\n「进来。」她说。声音不高，但每个字都清清楚楚。");
-  const initChoices = [
-    { label: "A", text: "低头跟进去" },
-    { label: "B", text: "跪着不动，等她把话说完" },
-    { label: "C", text: "抬眼看了她一眼" }
+  // 随机开局场景
+  const openings = [
+    "你在一座不知名的山脚下醒来。暮色四合，远处有钟声传来。山间有路，不知通向何处。",
+    "你站在一座热闹的修仙坊市中，周围是叫卖的散修和琳琅的法器摊位。没有人注意到你。",
+    "一场大战之后，你从废墟中爬出来。身边横七竖八躺着尸体，你记不清自己是谁。",
+    "你在深山古刹中打坐醒来。窗外大雪纷飞，一个老僧背对着你，正在慢吞吞地扫地。",
+    "你是某个小宗门的外门弟子，今天是宗门大比的日子。演武场上人声鼎沸，而你——还不会一招像样的术法。"
   ];
-  renderChoices(initChoices, box);
-  document.getElementById("endingOverlay").classList.remove("open");
-  document.getElementById("userInput").disabled = false;
-  document.getElementById("sendBtn").disabled = false;
+  const op = openings[Math.floor(Math.random() * openings.length)];
+  writeSystem(op);
+  renderChoices([
+    {label:"A", text:"环顾四周"},
+    {label:"B", text:"迈步向前"},
+    {label:"C", text:"闭上眼睛感受灵气"}
+  ], box);
+  $("endingOverlay").classList.remove("open");
+  $("userInput").disabled = false;
+  $("sendBtn").disabled = false;
+  renderUI();
 }
 
 // ============================================================
 //  UI 渲染
 // ============================================================
-const $ = id => document.getElementById(id);
-
-function renderUI() {
-  const trust = Math.min(100, Math.max(0, G.trust));
-  const memory = Math.min(100, Math.max(0, G.memory));
-  $("trustFill").style.width = trust + "%";
-  $("memoryFill").style.width = memory + "%";
-  $("trustVal").textContent = G.trust;
-  $("memoryVal").textContent = G.memory;
-  $("dayVal").textContent = G.day;
-  $("locVal").textContent = G.location;
+function renderUI(){
+  const c = Math.min(100, Math.max(0, G.cultivation));
+  const f = Math.min(100, Math.max(0, G.fortune));
+  $("cultFill").style.width = c + "%";
+  $("fortFill").style.width = f + "%";
+  $("cultVal").textContent = G.cultivation;
+  $("fortVal").textContent = G.fortune;
+  $("dayVal").textContent = Math.ceil(G.day);
   $("roundVal").textContent = G.round;
 
-  // trust bar color
-  const trustEl = $("trustFill");
-  if (trust >= 70) trustEl.style.background = "linear-gradient(90deg, #5a9a5a, #7aba7a)";
-  else if (trust >= 40) trustEl.style.background = "linear-gradient(90deg, #6a8a4a, #8aaa5a)";
-  else trustEl.style.background = "linear-gradient(90deg, #8a5a4a, #aa7a5a)";
+  // 修为颜色
+  const cultEl = $("cultFill");
+  if(c >= 70) cultEl.style.background = "linear-gradient(90deg,#4a7a9a,#6a9aba)";
+  else if(c >= 40) cultEl.style.background = "linear-gradient(90deg,#3a5a7a,#5a8aaa)";
+  else cultEl.style.background = "linear-gradient(90deg,#2a4a5a,#4a6a7a)";
+
+  const fortEl = $("fortFill");
+  if(f >= 70) fortEl.style.background = "linear-gradient(90deg,#5a9a5a,#7aba7a)";
+  else if(f >= 40) fortEl.style.background = "linear-gradient(90deg,#5a7a3a,#7aaa5a)";
+  else fortEl.style.background = "linear-gradient(90deg,#4a6a3a,#6a8a5a)";
 }
 
-// ===== Message =====
-function addMessage(role, content) {
+function addMessage(role, content){
   const box = $("chatMessages");
   const d = document.createElement("div");
   d.className = "message " + role;
-  const cls = role === "player" ? "player-bubble" :
-              role === "system" ? "system-bubble" : "ai-bubble";
-  d.innerHTML = '<div class="message-bubble ' + cls + '">' + content.replace(/\n/g, '<br>') + '</div>';
+  const cls = role==="player"?"player-bubble":role==="system"?"system-bubble":"ai-bubble";
+  d.innerHTML = '<div class="message-bubble '+cls+'">'+content.replace(/\n/g,'<br>')+'</div>';
   box.appendChild(d);
   box.scrollTop = box.scrollHeight;
-  G.history.push({ role, content });
-  if (G.history.length > 200) G.history.splice(0, 20);
+  G.history.push({role,content});
+  if(G.history.length > 200) G.history.splice(0,20);
 }
 
-function writeSystem(text) { addMessage("system", text); }
+function writeSystem(t){ addMessage("system", t); }
 
 // ============================================================
-//  配置
+//  选 项 系 统
+// ============================================================
+function parseChoices(text){
+  const pattern = /【选项([ABC])】([^【]*)/g;
+  const choices = [];
+  let m;
+  while((m = pattern.exec(text)) !== null) choices.push({label:m[1], text:m[2].trim()});
+  return choices.length === 3 ? choices : [];
+}
+function stripChoices(text){
+  return text.replace(/\n?【选项[ABC]】[^【]*/g,'').trim();
+}
+function renderChoices(choices, container){
+  if(!choices||!choices.length) return;
+  // 清除旧的选择按钮
+  document.querySelectorAll(".choice-group").forEach(el => el.remove());
+  const div = document.createElement("div");
+  div.className = "message choice-group";
+  div.style="margin-top:4px;display:flex;gap:6px";
+  
+  let labels = ["A","B","C"];
+  choices.forEach((ch,i) => {
+    const btn = document.createElement("button");
+    btn.className = "event-btn";
+    btn.style="flex:1;text-align:center;padding:9px 8px;background:#1e301e;border:1px solid #3a6a3a;border-radius:8px;color:#b8d8a8;font-size:.82rem;cursor:pointer;font-family:inherit";
+    btn.textContent = ch.label + ". " + ch.text;
+    btn.onmouseover = ()=>{btn.style.background="#2a4a2a";btn.style.borderColor="#4a8a4a"};
+    btn.onmouseout = ()=>{btn.style.background="#1e301e";btn.style.borderColor="#3a6a3a"};
+    btn.onclick = ()=>{
+      div.remove();
+      const input = $("userInput");
+      input.value = ch.text;
+      handleSend();
+    };
+    div.appendChild(btn);
+  });
+  container.appendChild(div);
+}
+
+// ============================================================
+//  配 置
 // ============================================================
 let cfg = null;
-
-function loadCfg() {
-  try {
-    const raw = localStorage.getItem("xiuxian_v2_cfg");
-    if (raw) {
-      cfg = JSON.parse(raw);
-      if (cfg.openai) {
+function loadCfg(){
+  try{
+    const r = localStorage.getItem("yunyou_cfg");
+    if(r){
+      cfg = JSON.parse(r);
+      if(cfg.openai){
         $("cfgOpenaiUrl").value = cfg.openai.baseUrl || "";
         $("cfgOpenaiKey").value = cfg.openai.apiKey || "";
         $("cfgOpenaiModel").value = cfg.openai.model || "";
       }
-      if (cfg.ollama) {
+      if(cfg.ollama){
         $("cfgOllamaUrl").value = cfg.ollama.baseUrl || "http://localhost:11434";
         $("cfgOllamaModel").value = cfg.ollama.model || "qwen2.5";
       }
-      if (cfg.mode === "ollama") {
+      if(cfg.mode === "ollama"){
         document.querySelectorAll(".config-tabs button").forEach(b => {
           b.classList.toggle("active", b.dataset.mode === "ollama");
         });
@@ -569,461 +302,257 @@ function loadCfg() {
         $("ollamaForm").classList.remove("hidden");
       }
     }
-  } catch (e) {}
+  }catch(e){}
 }
-
-function saveCfg() {
+function saveCfg(){
   const mode = document.querySelector(".config-tabs button.active").dataset.mode;
   cfg = {
     mode,
-    openai: {
-      baseUrl: $("cfgOpenaiUrl").value.trim(),
-      apiKey: $("cfgOpenaiKey").value.trim(),
-      model: $("cfgOpenaiModel").value.trim()
-    },
-    ollama: {
-      baseUrl: $("cfgOllamaUrl").value.trim() || "http://localhost:11434",
-      model: $("cfgOllamaModel").value.trim() || "qwen2.5"
-    }
+    openai: { baseUrl: $("cfgOpenaiUrl").value.trim(), apiKey: $("cfgOpenaiKey").value.trim(), model: $("cfgOpenaiModel").value.trim() },
+    ollama: { baseUrl: $("cfgOllamaUrl").value.trim()||"http://localhost:11434", model: $("cfgOllamaModel").value.trim()||"qwen2.5" }
   };
-  localStorage.setItem("xiuxian_v2_cfg", JSON.stringify(cfg));
-  const hasKey = cfg.openai && cfg.openai.apiKey ? "API Key 已填" : "⚠️ API Key 为空";
-  $("modelStatus").textContent = "✅ " + cfg.mode + " 已保存 · " + hasKey;
-  $("modelStatus").className = cfg.openai.apiKey ? "model-status" : "model-status error";
-}
-
-function cfgTabClick(e) {
-  document.querySelectorAll(".config-tabs button").forEach(b => b.classList.remove("active"));
-  e.currentTarget.classList.add("active");
-  const mode = e.currentTarget.dataset.mode;
-  $("openaiForm").classList.toggle("hidden", mode !== "openai");
-  $("ollamaForm").classList.toggle("hidden", mode !== "ollama");
+  localStorage.setItem("yunyou_cfg", JSON.stringify(cfg));
+  const hasKey = cfg.openai && cfg.openai.apiKey;
+  $("modelStatus").textContent = hasKey ? "✅ 已配置" : "⚠️ API Key 为空";
+  $("modelStatus").className = hasKey ? "model-status" : "model-status error";
 }
 
 // ============================================================
-//  AI 调用
+//  AI 调 用
 // ============================================================
-async function callAI(messages) {
-  if (!cfg) throw new Error("请先配置模型");
-  const AbortController = window.AbortController;
+async function callAI(messages){
+  if(!cfg) throw new Error("请先配置模型");
   const ctl = new AbortController();
-  const timer = setTimeout(() => ctl.abort(), 8000);
-
-  try {
-    if (cfg.mode === "ollama") {
-      const url = cfg.ollama.baseUrl.replace(/\/+$/, "") + "/api/chat";
+  const timer = setTimeout(() => ctl.abort(), 10000);
+  try{
+    if(cfg.mode === "ollama"){
+      const url = cfg.ollama.baseUrl.replace(/\/+$/,"")+"/api/chat";
       const r = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({
           model: cfg.ollama.model,
-          messages: messages.map(m => ({ role: m.role, content: m.content })),
-          stream: false,
-          options: { temperature: 0.8 }
+          messages: messages.map(m=>({role:m.role,content:m.content})),
+          stream:false,
+          options:{temperature:0.85}
         }),
         signal: ctl.signal
       });
-      if (!r.ok) throw new Error("Ollama: " + r.status);
-      const data = await r.json();
-      return data.message.content;
+      if(!r.ok) throw new Error("Ollama: "+r.status);
+      return (await r.json()).message.content;
     } else {
-      const base = cfg.openai.baseUrl.replace(/\/+$/, "");
-      const r = await fetch(base + "/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + cfg.openai.apiKey
-        },
-        body: JSON.stringify({
-          model: cfg.openai.model || "gpt-4",
+      const base = cfg.openai.baseUrl.replace(/\/+$/,"");
+      const r = await fetch(base+"/chat/completions", {
+        method:"POST",
+        headers:{"Content-Type":"application/json","Authorization":"Bearer "+cfg.openai.apiKey},
+        body:JSON.stringify({
+          model: cfg.openai.model||"gpt-4",
           messages: messages,
-          temperature: 0.8,
-          max_tokens: 500
+          temperature: 0.85,
+          max_tokens: 600
         }),
         signal: ctl.signal
       });
-      if (!r.ok) throw new Error("API: " + r.status + " " + r.statusText);
-      const data = await r.json();
-      return data.choices[0].message.content;
+      if(!r.ok) throw new Error("API: "+r.status+" "+r.statusText);
+      return (await r.json()).choices[0].message.content;
     }
-  } finally {
-    clearTimeout(timer);
-  }
+  }finally{ clearTimeout(timer); }
 }
 
-// ============================================================
-//  选项系统：解析AI回复中的ABC选项
-// ============================================================
-function parseChoices(text) {
-  // 格式：【选项A】...【选项B】...【选项C】...
-  const pattern = /【选项([ABC])】([^【]*)/g;
-  const choices = [];
-  let match;
-  while ((match = pattern.exec(text)) !== null) {
-    choices.push({ label: match[1], text: match[2].trim() });
-  }
-  return choices.length === 3 ? choices : [];
-}
-
-function stripChoices(text) {
-  return text.replace(/\n?【选项[ABC]】[^【]*/g, '').trim();
-}
-
-function renderChoices(choices, container) {
-  if (!choices || choices.length === 0) return;
-  const div = document.createElement("div");
-  div.className = "message choice-options";
-  div.style = "margin-top:4px;display:flex;gap:6px;flex-wrap:wrap";
-
-  choices.forEach(ch => {
-    const btn = document.createElement("button");
-    btn.className = "event-btn";
-    btn.style = "flex:1;min-width:80px;text-align:center;padding:8px 10px;background:#1e301e;border:1px solid #3a6a3a;border-radius:8px;color:#b8d8a8;font-size:.82rem;cursor:pointer;font-family:inherit;transition:all .2s";
-    btn.textContent = ch.label + ". " + ch.text;
-    btn.onmouseover = () => { btn.style.background = "#2a4a2a"; btn.style.borderColor = "#4a8a4a"; };
-    btn.onmouseout = () => { btn.style.background = "#1e301e"; btn.style.borderColor = "#3a6a3a"; };
-    btn.onclick = () => {
-      div.remove();
-      // 清除这个AI消息后面可能有的其他choice区域
-      document.querySelectorAll(".choice-options").forEach(el => el.remove());
-      // 把选项文字填入输入框并发送
-      const input = $("userInput");
-      input.value = ch.text;
-      handleSend();
-    };
-    div.appendChild(btn);
-  });
-
-  container.appendChild(div);
-}
-
-function buildPrompt() {
-  const trustDesc = G.trust < 30 ? "这个弟子让你失望。你保持距离，话很少，目光也不多停留。" :
-    G.trust < 60 ? "这个弟子还算规矩。你偶尔会多问一句，但语气仍是公事公办。" :
-    G.trust < 80 ? "这个弟子渐入你眼。你会在无人处多看他一瞬，话里多了一丝不易察觉的温度。" :
-    "这个弟子……你已经很难完全用师长的眼光看他了。你依然克制，但有些情绪，连你自己都开始压不住。";
-
-  const heartDesc = G.memory < 30 ? "他心性纯粹，尚无杂念。" :
-    G.memory < 60 ? "他开始有一些不该有的念头了——对山下的牵挂，对某些人的在意。" :
-    G.memory < 80 ? "他心中装了太多东西。作为修士，这很危险；但你发现自己并不完全想让他放下。" :
-    "他满心都是世俗牵念——而你，竟也是其中之一。你明知该断，却迟迟没有开口。";
-
+function buildPrompt(){
   return [
-    { role: "system", content: '你是「萧青砚」，道号青砚真人，霁月宗戒律院长老，凝神境中期。\n\n当前：师恩 ' + G.trust + '/100 · 凡心 ' + G.memory + '/100 · 第 ' + G.day + ' 天\n\n' + trustDesc + '\n' + heartDesc + '\n\n=== 角色 ===\n你三十六岁，执掌戒律院十年。霁月宗是扎根山村的仙门，宗规如家法，体面重于修为。\n作为女长老，你每一步都走在薄冰上——不能出错，不能偏私，不能让人说"女人当家果然不行"。\n\n你外表克制、冷静、威严。内心孤独、压抑，有隐秘的情感冲突。\n你对这个弟子的态度，由师恩值决定（低=冷淡疏离，高=有温度但仍克制）。\n凡心值越高，说明弟子心中世俗牵念越重——你既担心他走偏，又不忍苛责。\n\n=== 叙事规则 ===\n1. 用中文回复，文学化风格，偏现实主义。\n2. 每次回复不超过120字。\n3. 通过细节、动作、环境、潜台词传达情感，不直白抒情。\n4. 对话中有停顿、沉默、未尽之言——这些比说出口的更重。\n5. 可以提到：戒律院的青石阶、檐角的雪、丹房药香、晨钟暮鼓、山间雾霭。\n6. 你是师长，不是恋人。关心要有距离，温度要藏在公事公办的外壳下。\n7. 最重要的规则：\n每次回复结尾，必须提供3个选项，格式如下：\n【选项A】具体行动描述\n【选项B】具体行动描述\n【选项C】具体行动描述\n选项要贴合你的身份和当前心境。师恩低时选项疏离，高时可以有更多试探性接触。\n\n现在开始扮演青砚真人。' }
+    { role: "system", content: `你是「云游志」的游戏主持（Game Master），一个修仙/仙侠世界的叙事引擎。
+
+=== 现状 ===
+修为：${G.cultivation}/100（修行境界和实力）
+机缘：${G.fortune}/100（气运和际遇）
+第 ${Math.ceil(G.day)} 天
+累计行动：${G.round} 次
+
+=== 规则 ===
+1. 每次生成一段沉浸式叙事回复（中文，80-150字）。
+2. 文学化风格，有画面感和细节，不要网文套路。
+3. 每次回复结尾必须提供3个选项，格式：
+   【选项A】具体行动描述
+   【选项B】具体行动描述
+   【选项C】具体行动描述
+4. 玩家可以不选选项，自由输入任何行动。你要灵活响应。
+5. 世界是动态的——NPC、地点、事件、敌人、机缘都由你创造。
+6. 保持叙事连贯性：记住之前发生过什么。
+7. 修为和机缘会影响叙事走向：修者强时遇到更强的挑战，机缘好时遇到奇遇。
+8. 当故事走向自然结局（飞升、陨落、归隐、入魔等）时，用【结局】标记。
+   格式：
+   叙事内容……
+   【结局】结局名称
+   结局描述……
+
+=== 叙事风格 ===
+- 偏现实主义+古典文学，像《聊斋》《阅微草堂笔记》的感觉
+- 对话有潜台词，行为有动机
+- 世界有质感：风雨、冷暖、饥饿、疲惫
+- 每次开局应当生成完全不同的世界和起点，不要重复设定
+- NPC要有自己的性格和目的，不是工具人
+
+开始叙事。第一句先描述玩家所处的环境、时间和处境，然后给出3个选项。` }
   ];
 }
 
 // ============================================================
-//  游戏核心
+//  游 戏 核 心
 // ============================================================
-function processTrust(text) {
-  let change = 0;
-  // 恭顺/受教/自省 → +5
-  if (/弟子知错|弟子明白|遵命|是|受教|多谢|徒儿|学生|知道了|谢师尊|谢真人/.test(text)) change += 5;
-  // 体贴/关心师尊 → +4
-  else if (/您没事吧|您辛苦了|您还好|您休息|关心|担心您/.test(text)) change += 4;
-  // 顶撞/抗命 → -6
-  else if (/凭什么|我不服|为什么|不要你管|不关你事|你管不着/.test(text)) change -= 6;
-  // 追问过去/探寻师尊 → +3
-  else if (/师尊以前|真人年轻时|您过去|您的身世|她从前|她年轻/.test(text)) change += 3;
-  // 暴戾/攻击 → -10
-  else if (/杀|死|打|废了|弄死|妖|魔|邪/.test(text)) change -= 10;
-  // 沉默/回避 → -2
-  else if (/……|\.\.\.|算了|没什么|没事/.test(text)) change -= 2;
-  // 默认微小变化
-  else change = Math.floor(Math.random() * 3) - 1;
-  G.trust = Math.min(100, Math.max(0, G.trust + change));
-  return change;
-}
-
-function triggerDream() {
-  const texts = [
-    "💭 你做了一个梦。梦里你不在霁月宗，在一个有炊烟的地方，有人在叫你的名字——不是道号，是你几乎已经忘了的本名。",
-    "💭 凌晨打坐时走了神。你想起了山下镇子上的集市，想起了一些很普通、但再也回不去的事。",
-    "💭 你在戒律院廊下扫地时，一片枯叶落在肩上。你忽然想起，已经很久没有人拍过你的肩了。",
-    "💭 苍梧山起雾了。雾从山谷往上涌，像要把整座山都吞掉。你站在雾里，觉得什么都看不清楚。",
-    "💭 你无意间在藏经阁翻到一本旧书，扉页上有批注——笔迹很淡，像是多年前的某个人留下的。"
-  ];
-  writeSystem(texts[Math.floor(Math.random() * texts.length)]);
-  if (Math.random() < 0.5) {
-    const gain = 10 + Math.floor(Math.random() * 11);
-    G.memory = Math.min(100, G.memory + gain);
-    writeSystem("这些念头在心头盘桓不去……（凡心 +" + gain + "）");
+function processEngagement(text){
+  // AI自我管理修为和机缘，这里只做微调
+  let c = 0, f = 0;
+  // 悟道/修行/探索相关
+  if(/悟|修|练|参|静坐|打坐|钻研|参悟|修炼|运气/.test(text)) c += Math.floor(Math.random()*3)+1;
+  // 行善/助人相关
+  else if(/帮|救|助|施|善|让/.test(text)) f += Math.floor(Math.random()*3)+1;
+  // 冒险/探索相关
+  else if(/走|去|探|寻|找|闯|追/.test(text)) f += Math.floor(Math.random()*2);
+  // 战斗/对抗相关
+  else if(/战|斗|攻|杀|打|剑/.test(text)) c += Math.floor(Math.random()*4)+1;
+  // 消极/退缩
+  else if(/逃|躲|退|怕|不/.test(text)) { c -= Math.floor(Math.random()*2)+1; f -= Math.floor(Math.random()*2); }
+  // 默认
+  else { c += Math.floor(Math.random()*3)-1; f += Math.floor(Math.random()*3)-1; }
+  G.cultivation = Math.min(100, Math.max(0, G.cultivation + c));
+  G.fortune = Math.min(100, Math.max(0, G.fortune + f));
+  if(c!==0||f!==0){
+    const parts = [];
+    if(c>0) parts.push("修为 +"+c); if(c<0) parts.push("修为 "+c);
+    if(f>0) parts.push("机缘 +"+f); if(f<0) parts.push("机缘 "+f);
+    writeSystem("（" + parts.join("，") + "）");
   }
-  if (G.memory >= 100) writeSystem("⚠️ 凡心太重。你意识到自己在意的已经太多——对一个修士而言，这是危险的。");
 }
 
-function triggerEvent() {
-  const events = [
-    {
-      label: "山门试炼",
-      text: "外门弟子在演武场比试，有人受了伤。青砚真人在高台上看着，没有表情。",
-      opts: [
-        { t: "上前帮忙治伤", trust: 4, mem: 0 },
-        { t: "继续练自己的剑", trust: -2, mem: 2 },
-        { t: "抬头看她一眼", trust: 0, mem: 3 }
-      ]
-    },
-    {
-      label: "戒律院传唤",
-      text: "你被叫去戒律院问话。青砚真人坐在案后，手里的笔没有停。",
-      opts: [
-        { t: "如实回答", trust: 3, mem: 0 },
-        { t: "问她在写什么", trust: -1, mem: 4 },
-        { t: "沉默以对", trust: -4, mem: 0 }
-      ]
-    },
-    {
-      label: "后山雪径",
-      text: "你在后山遇见青砚真人独自站在雪中，没有撑伞，肩上落了一层白。",
-      opts: [
-        { t: "走过去替她撑伞", trust: 6, mem: 5 },
-        { t: "远远行礼后退下", trust: 2, mem: 0 },
-        { t: "假装没看见", trust: -3, mem: 2 }
-      ]
-    },
-    {
-      label: "丹房夜话",
-      text: "深夜，丹房的灯还亮着。青砚真人在整理药材，似乎有心事。",
-      opts: [
-        { t: "问是否需要帮忙", trust: 4, mem: 2 },
-        { t: "在一旁安静守着", trust: 2, mem: 4 },
-        { t: "不该打扰，转身离开", trust: 1, mem: 0 }
-      ]
-    },
-    {
-      label: "宗门议事",
-      text: "几位长老在议事厅争执。青砚真人一言不发，脸色比平时更白。",
-      opts: [
-        { t: "在门外等她出来", trust: 3, mem: 3 },
-        { t: "各自回房", trust: 0, mem: 0 },
-        { t: "过后去问她是否安好", trust: 5, mem: 5 }
-      ]
-    }
-  ];
-
-  const ev = events[Math.floor(Math.random() * events.length)];
-  writeSystem("📜 【" + ev.label + "】" + ev.text);
-
-  const box = $("chatMessages");
-  const div = document.createElement("div");
-  div.className = "message event-options";
-  div.style = "margin-top:4px";
-
-  ev.opts.forEach(opt => {
-    const btn = document.createElement("button");
-    btn.className = "event-btn";
-    btn.textContent = "→ " + opt.t;
-    btn.onclick = () => {
-      G.trust = Math.min(100, Math.max(0, G.trust + opt.trust));
-      G.memory = Math.min(100, Math.max(0, G.memory + opt.mem));
-      addMessage("player", opt.t);
-      const parts = [];
-      if (opt.trust) parts.push("师恩 " + (opt.trust > 0 ? "+" : "") + opt.trust);
-      if (opt.mem) parts.push("凡心 +" + opt.mem);
-      if (parts.length) writeSystem("（" + parts.join("，") + "）");
-      div.remove();
-      renderUI();
-      saveState();
-      checkEnding();
-    };
-    div.appendChild(btn);
-  });
-  box.appendChild(div);
-  box.scrollTop = box.scrollHeight;
-}
-
-// ===== Ending =====
-function checkEnding() {
-  if (G.ended) return;
-
-  // 防止重复触发
-  if (G.lastEndingCheck.trust === G.trust && G.lastEndingCheck.memory === G.memory) return;
-  G.lastEndingCheck = { trust: G.trust, memory: G.memory };
-
-  let end = null;
-  if (G.trust >= 80 && G.memory >= 80) {
-    end = { title: "授 业", desc: "你通过了所有试炼，成为霁月宗立派以来最年轻的入室弟子。\n青砚真人站在戒律院门口等你，手里捧着你的新道牒。\n她没有笑——但她递出道牒时，指尖在纸上多停了片刻。\n「别让我失望。」她说。这是她能给的最高的认可。" };
-  } else if (G.trust >= 80 && G.memory < 80) {
-    end = { title: "守 山", desc: "你没有离开。你选择了留下来，守这座山，守这条规矩。\n青砚真人什么也没说。\n只是从那以后，你巡夜时，戒律院的灯总是熄得比往年早一些。" };
-  } else if (G.trust < 80 && G.memory >= 80) {
-    end = { title: "下 山", desc: "凡心太重，修行难以为继。你向青砚真人辞行。\n她坐在案后，笔悬在半空，很久没有落下。\n最后她说：「去吧。」\n你没有回头。你不知道的是，她那天在戒律院坐到了寅时。" };
-  }
-
-  // 逐出师门——真正交互后触发
-  if (!end && G.trust < 50 && G.memory < 50 && G.round > 5) {
-    end = { title: "逐 出 师 门", desc: "你屡次触犯门规，不知悔改。\n青砚真人在宗祠前宣读了逐出令。\n她的声音比平时更低，像压着什么。\n你被剥去道袍，推下山门。\n大雪盖住了你的脚印，也盖住了她站在门口一动不动的身影。" };
-  }
-
-  if (!end) return;
-
-  G.ended = true;
-  saveState();
-  $("endingTitle").textContent = "🏁 " + end.title;
-  $("endingDesc").textContent = end.desc;
-  $("endingOverlay").classList.add("open");
-  $("userInput").disabled = true;
-  $("sendBtn").disabled = true;
-}
-
-// ===== Send =====
-async function handleSend() {
+// ============================================================
+//  发送消息
+// ============================================================
+async function handleSend(){
   const input = $("userInput");
   const text = input.value.trim();
-  if (!text || G.ended) return;
+  if(!text || G.ended) return;
   input.value = "";
   $("sendBtn").disabled = true;
 
   addMessage("player", text);
   G.round++;
-  G.day = Math.ceil(G.round / 4) + 1;
+  G.day = G.round / 3 + 1;
 
-  // 师恩变化
-  const trustChange = processTrust(text);
-  if (trustChange !== 0) {
-    writeSystem(trustChange > 0
-      ? "青砚真人看你的目光似乎柔和了一线。（师恩 +" + trustChange + "）"
-      : "青砚真人的眉锋几不可见地一蹙。（师恩 " + trustChange + "）");
-  }
-
+  processEngagement(text);
   renderUI();
   saveState();
 
-  // 梦境事件（20%概率）
-  if (Math.random() < 0.2) triggerDream();
-  // 随机事件（每3-5轮一次）
-  if (G.round >= G.nextEventRound) {
-    triggerEvent();
-    G.nextEventRound = G.round + 3 + Math.floor(Math.random() * 3);
-  }
+  if(G.ended){ $("sendBtn").disabled = false; return; }
 
-  renderUI();
-
-  // 检查结局
-  checkEnding();
-  if (G.ended) { $("sendBtn").disabled = false; return; }
-
-  // 调用AI
   try {
     const msgs = buildPrompt();
-    const recent = G.history.slice(-16);
-    for (const m of recent) {
-      msgs.push({ role: m.role, content: m.content });
-    }
+    const recent = G.history.slice(-20);
+    for(const m of recent) msgs.push({role:m.role, content:m.content});
     const reply = await callAI(msgs);
-    // 解析并剥离选项
-    const choices = parseChoices(reply);
-    const cleanReply = stripChoices(reply);
-    addMessage("ai", cleanReply);
-    if (choices.length > 0) {
-      const chatBox = $("chatMessages");
-      renderChoices(choices, chatBox);
-      chatBox.scrollTop = chatBox.scrollHeight;
+
+    // 检查结局标记
+    if(reply.includes("【结局】")){
+      const endMatch = reply.match(/【结局】([^\n]+)\n([\s\S]*)/);
+      if(endMatch){
+        G.ended = true;
+        saveState();
+        const clean = stripChoices(endMatch[0] || reply);
+        addMessage("ai", clean.replace(/【结局】[^\n]*/,''));
+        $("endingTitle").textContent = "🏁 " + endMatch[1].trim();
+        $("endingDesc").textContent = endMatch[2].trim();
+        $("endingOverlay").classList.add("open");
+        $("userInput").disabled = true;
+        $("sendBtn").disabled = true;
+        renderUI();
+        $("sendBtn").disabled = false;
+        return;
+      }
     }
-  } catch (e) {
-    console.warn("AI调用失败:", e);
-    $("modelStatus").textContent = "⚠️ API请求失败：" + (e.message || "未知错误");
+
+    const choices = parseChoices(reply);
+    const clean = stripChoices(reply);
+    addMessage("ai", clean);
+    if(choices.length){
+      renderChoices(choices, $("chatMessages"));
+      $("chatMessages").scrollTop = $("chatMessages").scrollHeight;
+    }
+  } catch(e){
+    console.warn("AI failure:", e);
+    $("modelStatus").textContent = "⚠️ " + (e.message||"请求失败");
     $("modelStatus").className = "model-status error";
-    // Fallback 回复（含选项）—— 即使无API也能继续游戏
+
     const fallbacks = [
-      { text: "（青砚真人没有抬头。她的笔尖悬在纸上，像是在等你说什么，又像是什么都不等。）\n\n过了很久，她才开口：「你知道我叫你进来是为了什么。」这不是问句。", choices: ["弟子知错", "弟子不明白", "请师尊明示"] },
-      { text: "「你最近的修为……没有寸进。」她的语气平得像一面湖，但你听得出湖底有东西。\n她终于看了你一眼，又移开。", choices: ["请求师尊指点", "承认近来分心", "低头不语"] },
-      { text: "（她站在廊下看雪。背影笔直，却不知为什么让人觉得单薄。雪落在她肩上，她不掸。）\n\n「苍梧山的雪，一年比一年大了。」她像是在对你说，又像自言自语。", choices: ["站到她身边去", "在廊下远远陪着", "问她在想什么"] },
-      { text: "「霁月宗的规矩，你不是不知道。」她说这话时依然没有看你。\n「既然知道，为什么还要犯？」她的声音里有一丝你从未听过的东西——不像愤怒，更像失望。", choices: ["说弟子知错了", "说规矩不一定都对", "沉默认罚"] },
-      { text: "（你站在戒律院里，炉火烧得很静。她翻着一本旧卷宗，翻得很慢，像是在找什么，又像是在拖延什么。）\n\n「你上前来。」她说。", choices: ["走上前去", "迟疑了一下再上前", "问她要看什么"] },
-      { text: "「你入霁月宗几年了？」她忽然问。\n不等你回答，她又说：「三年。三年了，你一点都没学会沉住气。」\n这话说得不重，却比打还疼。", choices: ["说弟子让您失望了", "说弟子有苦衷", "沉默地跪下来"] },
-      { text: "（暮色从窗口漫进来。她把笔搁下，揉了揉眉心——你第一次看见她做这个动作。像是很累。）\n\n「罢了。你退下吧。明日卯时，来丹房找我。」", choices: ["谢师尊，告退", "问她明日要做什么", "站着不走"] },
-      { text: "「你剑法练到第几式了？」她忽然转了话题。\n你答了。她听完，沉默了一会儿。\n「明日演武场，我亲自试你的剑。」", choices: ["谢师尊指点", "弟子不敢", "有些讶异地看着她"] }
+      { text: "你沿着山路走了不久，前方出现一座石桥。桥下流水湍急，对岸隐约有人影。", choices: ["过桥", "沿溪而下", "在桥头歇息"] },
+      { text: "你在林中遇到一位采药老人。他看了你一眼，说：「年轻人，前面可不是什么好去处。」", choices: ["问为什么", "执意前行", "向老人问路"] },
+      { text: "天色暗了。远处升起炊烟，像是有村落。近处有一座废弃的亭子，石桌上有半局残棋。", choices: ["去村落投宿", "在亭中过夜", "研究那局残棋"] },
+      { text: "一阵异香飘来。你循香而去，发现一株通体透明的草药，灵气浓郁。但旁边卧着一头似虎非虎的妖兽。", choices: ["冒险采药", "悄悄退走", "尝试与妖兽沟通"] },
+      { text: "你走到一处悬崖边。崖下有云海翻涌，崖壁上刻着几行古字，像是什么心法口诀。", choices: ["记下口诀", "纵身跃入云海", "沿崖壁寻找路径"] },
     ];
-    const fb = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+    const fb = fallbacks[G.round % fallbacks.length];
     addMessage("ai", fb.text);
-    // 为fallback生成选项按钮
-    const chatBox = $("chatMessages");
-    const altChoices = fb.choices.map((c, i) => ({ label: "ABC"[i], text: c }));
-    renderChoices(altChoices, chatBox);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    renderChoices(fb.choices.map((t,i)=>({label:"ABC"[i],text:t})), $("chatMessages"));
   }
 
   renderUI();
   saveState();
-  checkEnding();
-
   $("sendBtn").disabled = false;
   input.focus();
 }
 
 // ============================================================
-//  初始化
+//  初 始 化
 // ============================================================
-function init() {
+function init(){
   loadCfg();
-  $("configToggle").onclick = () => $("configPanel").classList.toggle("open");
-  document.querySelectorAll(".config-tabs button").forEach(b => b.onclick = cfgTabClick);
+
+  $("configToggle").onclick = ()=>$("configPanel").classList.toggle("open");
+  document.querySelectorAll(".config-tabs button").forEach(b=>{b.onclick=function(){
+    document.querySelectorAll(".config-tabs button").forEach(x=>x.classList.remove("active"));
+    this.classList.add("active");
+    $("openaiForm").classList.toggle("hidden", this.dataset.mode!=="openai");
+    $("ollamaForm").classList.toggle("hidden", this.dataset.mode!=="ollama");
+  }});
   $("saveConfig").onclick = saveCfg;
   $("sendBtn").onclick = handleSend;
-  $("userInput").onkeydown = e => { if (e.key === "Enter") handleSend(); };
-  $("resetBtn").onclick = () => { if (confirm("确定重置？所有进度将清除。")) resetState(); };
+  $("userInput").onkeydown = e => { if(e.key==="Enter") handleSend(); };
+  $("resetBtn").onclick = ()=>{ if(confirm("重新入世？当前进度将消失。")) resetState(); };
   $("endingRestart").onclick = resetState;
 
-  // 如果已有进度，继续
-  if (G.history.length > 0) {
+  // 读取已有进度或开局
+  if(G.history.length > 0){
     const box = $("chatMessages");
     box.innerHTML = "";
-    for (const m of G.history) {
-      if (m.role === "system" && m.content.startsWith("→")) continue; // skip event buttons
-      addMessage(m.role, m.content);
-    }
-    renderUI();
-    if (G.ended) {
-      $("userInput").disabled = true;
-      $("sendBtn").disabled = true;
-    }
+    for(const m of G.history) addMessage(m.role, m.content);
+    if(G.ended){ $("userInput").disabled = true; $("sendBtn").disabled = true; }
   } else {
-    writeSystem("苍梧山，霁月宗。冬月初七，大雪。\n\n你跪在戒律院外的石阶上，已经半个时辰了。膝盖隔着薄薄的单裤抵着青石，冷意像针一样往骨头里扎。\n\n门开了。\n\n青砚真人站在门槛内，没有看你，目光落在檐外的雪上。\n\n「进来。」她说。声音不高，但每个字都清清楚楚。");
-    // 初始选项
-    const initChoices = [
-      { label: "A", text: "低头跟进去" },
-      { label: "B", text: "跪着不动，等她把话说完" },
-      { label: "C", text: "抬眼看了她一眼" }
-    ];
-    const chatBox = $("chatMessages");
-    renderChoices(initChoices, chatBox);
-    renderUI();
+    resetState();
   }
 
-  // 如无已保存配置，自动预填讯飞星辰
-  if (!cfg) {
+  // 配置状态
+  if(!cfg){
     cfg = {
-      mode: "openai",
-      openai: {
-        baseUrl: "https://maas-coding-api.cn-huabei-1.xf-yun.com/v2",
-        apiKey: "",
-        model: "astron-code-latest"
-      },
-      ollama: {
-        baseUrl: "http://localhost:11434",
-        model: "qwen2.5"
-      }
+      mode:"openai",
+      openai:{baseUrl:"https://maas-coding-api.cn-huabei-1.xf-yun.com/v2", apiKey:"", model:"astron-code-latest"},
+      ollama:{baseUrl:"http://localhost:11434", model:"qwen2.5"}
     };
-    localStorage.setItem("xiuxian_v2_cfg", JSON.stringify(cfg));
+    localStorage.setItem("yunyou_cfg", JSON.stringify(cfg));
     $("cfgOpenaiUrl").value = cfg.openai.baseUrl;
     $("cfgOpenaiModel").value = cfg.openai.model;
   }
-
-  if (cfg.openai.apiKey) {
-    $("modelStatus").textContent = "✅ 讯飞星辰 已配置";
+  if(cfg.openai.apiKey){
+    $("modelStatus").textContent = "✅ 已配置";
     $("modelStatus").className = "model-status";
   } else {
-    $("modelStatus").textContent = "⚠️ 未配置 API Key，AI 将以规则模式运行（点击右下角⚙️配置）";
+    $("modelStatus").textContent = "⚠️ 未配置 API Key，将以规则模式运行";
     $("modelStatus").className = "model-status error";
   }
 }
 
-// 如果URL带 ?reset=1，清除所有游戏数据
-if (location.search.includes("reset=1")) {
-  localStorage.removeItem("xiuxian_v2_state");
-  localStorage.removeItem("xiuxian_v2_cfg");
-  // 清除后重定向到不带参数的URL
+// URL reset handler
+if(location.search.includes("reset=1")){
+  localStorage.removeItem("yunyou_state");
+  localStorage.removeItem("yunyou_cfg");
   location.replace(location.pathname);
 }
 
