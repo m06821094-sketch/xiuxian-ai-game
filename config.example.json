@@ -3,9 +3,9 @@
   "description": "修仙AI对话游戏 - 配置示例",
   "models": {
     "openai": {
-      "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "baseUrl": "https://maas-api.cn-huabei-1.xf-yun.com/v2",
       "apiKey": "your-api-key-here",
-      "model": "qwen-turbo"
+      "model": "astron-code-latest"
     },
     "ollama": {
       "baseUrl": "http://localhost:11434",
