@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>修仙AI对话游戏</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 顶部标题区 -->
+  <header class="header">
+    <h1>修仙AI对话游戏</h1>
+    <p class="subtitle">她捡到一片灰烬</p>
+  </header>
+
+  <!-- 主内容区 -->
+  <main class="main-container">
+    <!-- 左侧对话区 -->
+    <section class="chat-panel">
+      <div class="chat-messages" id="chatMessages">
+        <div class="message system">
+          <div class="message-bubble system-bubble">
+            青竹峰上，晨雾未散。你睁开眼，发现自己躺在一片竹林之中。<br>
+            身旁站着一位白衣女子，正低头看着你。<br>
+            「你终于醒了。」她说。
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" id="userInput" placeholder="输入对话..." autocomplete="off">
+        <button id="sendBtn" class="send-btn">发送</button>
+      </div>
+    </section>
+
+    <!-- 右侧状态栏 -->
+    <aside class="status-panel">
+      <h2>状态</h2>
+      <div class="status-item">
+        <span class="label">信任值</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="trustBar" style="width: 30%"></div>
+        </div>
+        <span class="value" id="trustValue">30</span>
+      </div>
+      <div class="status-item">
+        <span class="label">记忆碎片</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="memoryBar" style="width: 0%"></div>
+        </div>
+        <span class="value" id="memoryValue">0</span>
+      </div>
+      <div class="status-item">
+        <span class="label">天数</span>
+        <span class="value" id="dayValue">1</span>
+      </div>
+      <div class="status-item">
+        <span class="label">地点</span>
+        <span class="value" id="locationValue">青竹峰</span>
+      </div>
+      <button id="resetBtn" class="reset-btn">重置游戏</button>
+    </aside>
+  </main>
+
+  <!-- 配置面板（折叠） -->
+  <div class="config-toggle" id="configToggle">⚙️ 模型配置</div>
+  <div class="config-panel" id="configPanel" style="display: none;">
+    <h3>模型配置</h3>
+    <div class="config-tabs">
+      <button class="tab-btn active" data-mode="openai">OpenAI 兼容</button>
+      <button class="tab-btn" data-mode="ollama">Ollama 本地</button>
+    </div>
+    <div class="config-form" id="openaiConfig">
+      <label>Base URL</label>
+      <input type="text" id="openaiBaseUrl" placeholder="https://api.openai.com/v1">
+      <label>API Key</label>
+      <input type="password" id="openaiApiKey" placeholder="sk-...">
+      <label>Model</label>
+      <input type="text" id="openaiModel" placeholder="gpt-4">
+    </div>
+    <div class="config-form" id="ollamaConfig" style="display: none;">
+      <label>Base URL</label>
+      <input type="text" id="ollamaBaseUrl" placeholder="http://localhost:11434" value="http://localhost:11434">
+      <label>Model</label>
+      <input type="text" id="ollamaModel" placeholder="qwen2.5">
+    </div>
+    <button id="saveConfig" class="save-btn">保存配置</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

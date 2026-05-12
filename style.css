@@ -1,0 +1,376 @@
+/* ========== 基础重置 ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Noto Serif SC", "Source Han Serif CN", "SimSun", serif;
+  background: #1a1f1a;
+  color: #c8c8b8;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ========== 顶部标题区 ========== */
+.header {
+  background: linear-gradient(135deg, #2d3a2d 0%, #1a2f1a 100%);
+  padding: 12px 24px;
+  text-align: center;
+  border-bottom: 2px solid #4a7a4a;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  color: #d4c87a;
+  letter-spacing: 4px;
+  text-shadow: 0 0 10px rgba(212, 200, 122, 0.3);
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: #8a9a7a;
+  margin-top: 4px;
+  letter-spacing: 2px;
+}
+
+/* ========== 主布局 ========== */
+.main-container {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+/* ========== 左侧对话区 ========== */
+.chat-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #2d3a2d;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  background: #151a15;
+  scroll-behavior: smooth;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: #1a1f1a;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #3a4a3a;
+  border-radius: 3px;
+}
+
+.message {
+  margin-bottom: 16px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message-bubble {
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.system-bubble {
+  background: #2a3a2a;
+  border: 1px solid #3a5a3a;
+  color: #c8d8b8;
+  margin-left: 0;
+}
+
+.player-bubble {
+  background: #3a4a3a;
+  border: 1px solid #4a6a4a;
+  color: #d8e8c8;
+  margin-left: auto;
+  text-align: right;
+}
+
+.ai-bubble {
+  background: #2a3028;
+  border: 1px solid #4a5a3a;
+  color: #d0d0b8;
+}
+
+/* ========== 底部输入区 ========== */
+.chat-input-area {
+  display: flex;
+  padding: 12px 16px;
+  background: #1e251e;
+  border-top: 1px solid #2d3a2d;
+  gap: 8px;
+}
+
+#userInput {
+  flex: 1;
+  padding: 10px 14px;
+  background: #1a201a;
+  border: 1px solid #3a4a3a;
+  border-radius: 6px;
+  color: #c8c8b8;
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#userInput:focus {
+  border-color: #5a8a5a;
+}
+
+#userInput::placeholder {
+  color: #5a6a5a;
+}
+
+.send-btn {
+  padding: 10px 20px;
+  background: #3a5a3a;
+  border: 1px solid #4a7a4a;
+  border-radius: 6px;
+  color: #d4c87a;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.send-btn:hover {
+  background: #4a7a4a;
+}
+
+.send-btn:disabled {
+  background: #2a3a2a;
+  color: #5a6a5a;
+  cursor: not-allowed;
+}
+
+/* ========== 右侧状态栏 ========== */
+.status-panel {
+  width: 240px;
+  padding: 20px 16px;
+  background: #1a221a;
+  border-left: 1px solid #2d3a2d;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.status-panel h2 {
+  font-size: 1rem;
+  color: #d4c87a;
+  letter-spacing: 2px;
+  border-bottom: 1px solid #2d3a2d;
+  padding-bottom: 8px;
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.status-item .label {
+  font-size: 0.8rem;
+  color: #8a9a7a;
+}
+
+.status-item .value {
+  font-size: 0.9rem;
+  color: #d4c87a;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #2a3a2a;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4a7a4a, #6a9a5a);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.reset-btn {
+  margin-top: auto;
+  padding: 8px;
+  background: #2a2a2a;
+  border: 1px solid #4a3a3a;
+  border-radius: 6px;
+  color: #a08080;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.reset-btn:hover {
+  background: #3a2a2a;
+}
+
+/* ========== 配置面板 ========== */
+.config-toggle {
+  position: fixed;
+  bottom: 16px;
+  right: 260px;
+  padding: 8px 16px;
+  background: #2a3a2a;
+  border: 1px solid #3a5a3a;
+  border-radius: 6px;
+  color: #8a9a7a;
+  font-size: 0.85rem;
+  cursor: pointer;
+  z-index: 100;
+  transition: background 0.2s;
+}
+
+.config-toggle:hover {
+  background: #3a4a3a;
+}
+
+.config-panel {
+  position: fixed;
+  bottom: 56px;
+  right: 260px;
+  width: 320px;
+  padding: 16px;
+  background: #1e251e;
+  border: 1px solid #3a5a3a;
+  border-radius: 8px;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.config-panel h3 {
+  color: #d4c87a;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+}
+
+.config-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 6px;
+  background: #2a3a2a;
+  border: 1px solid #3a5a3a;
+  border-radius: 4px;
+  color: #8a9a7a;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.tab-btn.active {
+  background: #3a5a3a;
+  color: #d4c87a;
+}
+
+.config-form label {
+  display: block;
+  font-size: 0.8rem;
+  color: #8a9a7a;
+  margin-bottom: 4px;
+  margin-top: 8px;
+}
+
+.config-form input {
+  width: 100%;
+  padding: 6px 10px;
+  background: #1a201a;
+  border: 1px solid #3a4a3a;
+  border-radius: 4px;
+  color: #c8c8b8;
+  font-size: 0.85rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.config-form input:focus {
+  border-color: #5a8a5a;
+}
+
+.save-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px;
+  background: #3a5a3a;
+  border: 1px solid #4a7a4a;
+  border-radius: 4px;
+  color: #d4c87a;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.save-btn:hover {
+  background: #4a7a4a;
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .status-panel {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 12px;
+    gap: 12px;
+    border-left: none;
+    border-top: 1px solid #2d3a2d;
+  }
+
+  .status-panel h2 {
+    width: 100%;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .status-item {
+    flex: 1;
+    min-width: 100px;
+  }
+
+  .reset-btn {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .config-panel {
+    right: 10px;
+    left: 10px;
+    width: auto;
+  }
+
+  .config-toggle {
+    right: 10px;
+  }
+}
