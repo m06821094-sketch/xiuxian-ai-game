@@ -454,7 +454,9 @@ function checkEnding() {
     ending = { title: "守护结局", desc: "你选择留在沈青棠身边，守护她直到最后一刻。" };
   } else if (gameState.trust < 80 && gameState.memory >= 80) {
     ending = { title: "孤独飞升", desc: "你记起了前世的一切，却选择独自踏上飞升之路。" };
-  } else if (gameState.trust < 50 && gameState.memory < 50) {
+  // 逃离结局：信任值和记忆碎片都过低（需要玩家真正互动后才会触发）
+  // 初始状态 trust=30, memory=0 不触发，避免一打开就结束
+  if (gameState.trust < 50 && gameState.memory < 50 && gameState.day > 1) {
     ending = { title: "逃离结局", desc: "你无法再忍受这一切，转身离开了青竹峰。" };
   }
 
